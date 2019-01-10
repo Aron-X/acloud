@@ -50,9 +50,9 @@ public class BatchDaoImpl<T> {
                 entityManager.clear();
                 log.info("=====================");
             }
-            if (i == 5) {
+            /*if (i == 5) {
                 throw new RuntimeException("test error");
-            }
+            }*/
         }
     }
 }

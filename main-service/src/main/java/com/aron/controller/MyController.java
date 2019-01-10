@@ -1,5 +1,6 @@
 package com.aron.controller;
 
+import com.aron.annotation.CacheLock;
 import com.aron.dao.StockerRepository;
 import com.aron.dao.UDataRepository;
 import com.aron.entity.Stocker;
@@ -86,6 +87,7 @@ public class MyController {
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @GetMapping("/batch/update")
+    @CacheLock(key = "aron-test")
     public String batchUpdate() {
         log.info(">>>> batchUpdate <<<");
         myService.batchUpdate();

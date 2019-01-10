@@ -56,7 +56,7 @@ public class MyServiceImpl implements IMyService {
         String entity = stockerClass.getSimpleName();
         IdentifierColumn identifierColumn = stockerClass.getAnnotation(IdentifierColumn.class);
         Query query = entityManager.createQuery("from " + entity + " where " + identifierColumn.value() + " = ?");
-        Query nativeQuery = entityManager.createNativeQuery("select * from FRSTOCKER t where t.name = ?",stockerClass);
+        Query nativeQuery = entityManager.createNativeQuery("select * from FRSTOCKER t where t.name = ?", stockerClass);
         query.setParameter(1, name);
         nativeQuery.setParameter(1, name);
         List<Stocker> resultList = query.getResultList();
@@ -69,6 +69,11 @@ public class MyServiceImpl implements IMyService {
     public void batchUpdate() {
         List<Stocker> stockers = stockerRepository.findAll();
         stockers.forEach(stocker -> stocker.setSize(20D));
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         batchDao.batchUpdate(stockers);
     }
 }

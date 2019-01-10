@@ -1,17 +1,12 @@
 package com.aron.generator;
 
-import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.HibernateException;
-import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.id.IdentifierGenerator;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 /**
  * description:
@@ -228,7 +223,7 @@ public class SnowflakeIDWorker implements IdentifierGenerator {
     }
 
     @Override
-    public Serializable generate(SessionImplementor session, Object object) throws HibernateException {
+    public Serializable generate(SharedSessionContractImplementor session, Object object) throws HibernateException {
         long nextID = nextID();
         log.debug("next id is :" + nextID);
         return String.format("%s.%s", object.getClass().getSimpleName(), nextID);

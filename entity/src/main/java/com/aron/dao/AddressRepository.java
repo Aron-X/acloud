@@ -3,6 +3,7 @@ package com.aron.dao;
 import com.aron.entity.Address;
 import com.aron.entity.pk.AddressPk;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -19,5 +20,5 @@ import org.springframework.stereotype.Repository;
  * @copyright: 2018, FA Software (Shanghai) Co., Ltd. All Rights Reserved.
  */
 @Repository
-public interface AddressRepository extends JpaRepository<Address, AddressPk> {
+public interface AddressRepository extends JpaRepository<Address, AddressPk>, JpaSpecificationExecutor<Address> {
 }

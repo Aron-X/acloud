@@ -14,6 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -30,6 +31,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.List;
+import java.util.Optional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -150,10 +152,15 @@ public class AronTests {
         AddressPk addressPk = new AddressPk();
         addressPk.setName("test");
         addressPk.setValue("test");
-        Address one = addressRepository.findOne(addressPk);
+        Address address1 = new Address();
+        address1.setIdClass(addressPk);
+        addressRepository.findAll();
+        Optional<Address> one = addressRepository.findOne(Example.of(address1));
+        Address address = one.orElseThrow(() -> new RuntimeException("can not found record"));
+        AddressPk idClass = address.getIdClass();
 //        one.getIdClass().setValue("changed");
-        one.setDetails("changed");
-        addressRepository.save(one);
+//        one.setDetails("changed");
+        addressRepository.save(address);
     }
 
     @Test
