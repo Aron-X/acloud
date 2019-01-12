@@ -1,2 +1,2 @@
 # acloud
-Spring Cloud Demo
+Spring Boot Demo
