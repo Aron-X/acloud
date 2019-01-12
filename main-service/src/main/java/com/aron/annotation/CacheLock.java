@@ -6,7 +6,6 @@ import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.util.concurrent.TimeUnit;
 
 /**
  * description:
@@ -32,15 +31,5 @@ public @interface CacheLock {
      */
     String key();
 
-    /**
-     * @return expire
-     */
-    int expire() default 60;
-
-    /**
-     * @return TimeUnit
-     */
-    TimeUnit timeUnit() default TimeUnit.SECONDS;
-
-    String delimiter() default ":";
+    String delimiter() default "#";
 }

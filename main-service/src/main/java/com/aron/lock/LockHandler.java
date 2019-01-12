@@ -12,6 +12,9 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * description:
  * <p>RedisLock .<br/></p>
@@ -34,9 +37,7 @@ public class LockHandler {
     /**
      * Lock key path.
      */
-    @Getter
-    @Setter
-    private String lockKey;
+    private final static ThreadLocal<String> lockKey = new ThreadLocal<>();
 
     /**
      * 锁超时时间，防止线程在入锁以后，无限的执行等待
@@ -49,11 +50,11 @@ public class LockHandler {
     private int timeoutMsecs = 10 * 1000;
 
     /**
-     * volatile flag : locked
+     * lockedFlag
      */
     @Getter
     @Setter
-    private volatile boolean locked = false;
+    private Map<String, Boolean> lockedFlag = new HashMap<>();
 
     private final StringRedisTemplate redisTemplate;
 
@@ -83,6 +84,18 @@ public class LockHandler {
         return obj != null ? obj.toString() : null;
     }
 
+    public String getCurrentLockValue() {
+        if (StringUtils.isEmpty(getLockKey())) {
+            throw new RuntimeException("lockKey is empty");
+        }
+        return get(getLockKey());
+    }
+
+    public boolean isLockExpired() {
+        // redis里的时间
+        String timeOutValueStr = this.get(getLockKey());
+        return timeOutValueStr != null && Long.parseLong(timeOutValueStr) < System.currentTimeMillis();
+    }
 
     public String set(final String key, final String value) {
         Object obj = null;
@@ -147,7 +160,7 @@ public class LockHandler {
      * @throws InterruptedException in case of thread interruption
      */
     public synchronized boolean lock() throws InterruptedException {
-        if (StringUtils.isEmpty(lockKey)) {
+        if (StringUtils.isEmpty(getLockKey())) {
             return false;
         }
         int timeout = timeoutMsecs;
@@ -155,18 +168,17 @@ public class LockHandler {
             long expires = System.currentTimeMillis() + expireMsecs + 1;
             // 锁到期时间
             String expiresStr = String.valueOf(expires);
-            if (this.setNX(lockKey, expiresStr)) {
+            if (this.setNX(getLockKey(), expiresStr)) {
                 // lock acquired
-                locked = true;
+                lockedFlag.put(getLockKey(), true);
                 return true;
             }
-            // redis里的时间
-            String timeOutValueStr = this.get(lockKey);
-            if (timeOutValueStr != null && Long.parseLong(timeOutValueStr) < System.currentTimeMillis()) {
+            if (isLockExpired()) {
                 // 判断是否为空，不为空的情况下，如果被其他线程设置了值，则第二个条件判断是过不去的
                 // lock is expired
                 log.error("!!! lock is expired !!!");
-                String oldValueStr = this.getSet(lockKey, expiresStr);
+                String timeOutValueStr = getCurrentLockValue();
+                String oldValueStr = this.getSet(getLockKey(), expiresStr);
                 // 获取上一个锁到期时间，并设置现在的锁到期时间，
                 // 只有一个线程才能获取上一个线上的设置时间，因为jedis.getSet是同步的
                 if (oldValueStr != null && oldValueStr.equals(timeOutValueStr)) {
@@ -174,11 +186,11 @@ public class LockHandler {
 
                     // [分布式的情况下]:如过这个时候，多个线程恰好都到了这里，但是只有一个线程的设置值和当前值相同，他才有权利获取锁
                     // lock acquired
-                    locked = true;
+                    lockedFlag.put(getLockKey(), true);
                     return true;
                 }
             }
-            log.debug("{} waiting...", Thread.currentThread().getName());
+            log.info("{} waiting...", Thread.currentThread().getName());
 
             timeout -= DEFAULT_ACQUIRY_RESOLUTION_MILLIS;
 
@@ -197,13 +209,23 @@ public class LockHandler {
     /**
      * Acqurired lock release.
      */
-    public synchronized void unlock() {
-        if (StringUtils.isEmpty(lockKey)) {
+    public void unlock() {
+        log.info("{} unlock...", Thread.currentThread().getName());
+        if (StringUtils.isEmpty(getLockKey())) {
             return;
         }
-        if (locked) {
-            redisTemplate.delete(lockKey);
-            locked = false;
+        if (Boolean.TRUE.equals(lockedFlag.get(getLockKey()))) {
+            log.info("{} unlock success", Thread.currentThread().getName());
+            redisTemplate.delete(getLockKey());
+            lockedFlag.remove(getLockKey());
         }
+    }
+
+    public String getLockKey() {
+        return lockKey.get();
+    }
+
+    public void setLockKey(String key) {
+        lockKey.set(key);
     }
 }

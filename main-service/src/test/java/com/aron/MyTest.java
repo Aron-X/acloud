@@ -29,12 +29,24 @@ public class MyTest {
     private CustomData customData;
 
     @Autowired
+    @Qualifier("customDataWithNo")
+    private CustomData customData1;
+
+    @Autowired
+    @Qualifier("customDataWithNo")
+    private CustomData customData2;
+
+    @Autowired
     private CustomAdditionData customAdditionData;
 
     @Test
     public void test1() {
         customData.test();
+        customData1.test();
+        customData2.test();
 
         System.out.println(customAdditionData.getCustomData() == customData);
+        System.out.println(customData == customData1);
+        System.out.println(customData1 == customData2);
     }
 }

@@ -70,10 +70,11 @@ public class MyServiceImpl implements IMyService {
         List<Stocker> stockers = stockerRepository.findAll();
         stockers.forEach(stocker -> stocker.setSize(20D));
         try {
-            Thread.sleep(10000);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        System.out.println(1 / 0);
         batchDao.batchUpdate(stockers);
     }
 }
