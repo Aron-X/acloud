@@ -12,8 +12,8 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * description:
@@ -54,7 +54,7 @@ public class LockHandler {
      */
     @Getter
     @Setter
-    private Map<String, Boolean> lockedFlag = new HashMap<>();
+    private Map<String, Boolean> lockedFlag = new ConcurrentHashMap<>();
 
     private final StringRedisTemplate redisTemplate;
 
