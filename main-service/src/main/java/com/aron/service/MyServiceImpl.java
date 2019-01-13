@@ -67,14 +67,14 @@ public class MyServiceImpl implements IMyService {
 
     @Override
     public void batchUpdate() {
-        List<Stocker> stockers = stockerRepository.findAll();
-        stockers.forEach(stocker -> stocker.setSize(20D));
+        /*List<Stocker> stockers = stockerRepository.findAll();
+        stockers.forEach(stocker -> stocker.setSize(20D));*/
         try {
-            Thread.sleep(2000);
+            Thread.sleep(6000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println(1 / 0);
-        batchDao.batchUpdate(stockers);
+//        System.out.println(1 / 0);
+//        batchDao.batchUpdate(stockers);
     }
 }

@@ -30,7 +30,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Component
 @Slf4j
-public class LockHandler {
+public class RedisLock {
 
     private static final int DEFAULT_ACQUIRY_RESOLUTION_MILLIS = 100;
 
@@ -59,7 +59,7 @@ public class LockHandler {
     private final StringRedisTemplate redisTemplate;
 
     @Autowired
-    public LockHandler(StringRedisTemplate redisTemplate) {
+    public RedisLock(StringRedisTemplate redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 

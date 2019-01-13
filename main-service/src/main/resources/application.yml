@@ -29,7 +29,7 @@ spring:
   jpa:
 #    hibernate:
 #      ddl-auto: create
-    show_sql: true
+    show_sql: false
     database-platform: org.hibernate.dialect.Oracle12cDialect
 server:
   port: 5003

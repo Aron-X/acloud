@@ -1,7 +1,7 @@
 package com.aron.aop;
 
 import com.aron.annotation.CacheLock;
-import com.aron.lock.LockHandler;
+import com.aron.lock.RedisLock;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -31,10 +31,10 @@ import java.lang.reflect.Method;
 @Slf4j
 public class LockAspect {
 
-    private final LockHandler lock;
+    private final RedisLock lock;
 
     @Autowired
-    public LockAspect(LockHandler lockHandler) {
+    public LockAspect(RedisLock lockHandler) {
         this.lock = lockHandler;
     }
 
