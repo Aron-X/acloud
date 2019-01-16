@@ -33,17 +33,24 @@ public class MyController {
 //    @Autowired
 //    DiscoveryClient discoveryClient;
 
-    @Autowired
-    IMyService myService;
+    private final IMyService myService;
+
+    private final StockerRepository stockerRepository;
+
+    private final UDataRepository uDataRepository;
+
+    private final CimLock cimLock;
+
+    private final ZookeeperLockRegistry zookeeperLockRegistry;
 
     @Autowired
-    private StockerRepository stockerRepository;
-
-    @Autowired
-    private UDataRepository uDataRepository;
-
-    @Autowired
-    private CimLock cimLock;
+    public MyController(IMyService myService, StockerRepository stockerRepository, UDataRepository uDataRepository, CimLock cimLock, ZookeeperLockRegistry zookeeperLockRegistry) {
+        this.myService = myService;
+        this.stockerRepository = stockerRepository;
+        this.uDataRepository = uDataRepository;
+        this.cimLock = cimLock;
+        this.zookeeperLockRegistry = zookeeperLockRegistry;
+    }
 
     @RequestMapping("/show")
     public Stocker show(@RequestBody Stocker stocker, @RequestParam("name") String name) {
@@ -91,12 +98,15 @@ public class MyController {
         return returnMap;
     }
 
-    /*@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    /**
+     * this for zookeeperLockRegistry test case
+     *
+     * @return result
+     */
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @GetMapping("/batch/update")
-//    @CacheLock(key = "aron-test")
     public String batchUpdate() {
-        log.info("lockRegistry batchUpdate :{}", lockRegistry.toString());
-        Lock lock = lockRegistry.obtain("MyController-batchUpdate-2");
+        Lock lock = zookeeperLockRegistry.obtain("MyController-batchUpdate");
         boolean locked = true;
         log.info(">>>> {} enter in <<<", Thread.currentThread().getName());
         try {
@@ -104,8 +114,10 @@ public class MyController {
             if (!locked) {
                 return "please tried later ...";
             }
+            log.info(">>>> {} get lock success <<<", Thread.currentThread().getName());
             log.info(">>>> batchUpdate processing <<<");
-            myService.batchUpdate();
+            //sleep here use to analog processing
+            Thread.sleep(6000);
         } catch (Exception ex) {
             log.error("Fail to batchUpdate request", ex);
         } finally {
@@ -115,12 +127,17 @@ public class MyController {
         }
         log.info(">>>> {} done <<<", Thread.currentThread().getName());
         return "Success";
-    }*/
+    }
 
+    /**
+     * this for customized lock test case
+     *
+     * @return result
+     */
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    @GetMapping("/batch/update1")
+    @GetMapping("/my/batch/update")
 //    @CacheLock(key = "aron-test")
-    public String batchUpdate1() {
+    public String myBatchUpdate() {
         log.info(">>>> {} enter in <<<", Thread.currentThread().getName());
         boolean locked = false;
         try {
@@ -128,38 +145,15 @@ public class MyController {
             if (!locked) {
                 return "please tried later ...";
             }
+            log.info(">>>> {} get lock success <<<", Thread.currentThread().getName());
             log.info(">>>> batchUpdate processing <<<");
-            Thread thread = new Thread(() -> {
-                cimLock.tryLock("MyController-batchUpdate-method1");
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                //cimLock.unlock();
-            });
-            thread.start();
-
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            locked = cimLock.tryLock("MyController-batchUpdate-method2");
-            if (!locked) {
-                log.info("second lock get failed");
-            }
-            /*if (locked) {
-                cimLock.unlock();
-            }*/
             myService.batchUpdate();
         } catch (Exception ex) {
             log.error("Fail to batchUpdate request", ex);
         } finally {
-            /*if (locked) {
+            if (locked) {
                 cimLock.unlock();
-            }*/
-            cimLock.unlockAll();
+            }
         }
         log.info(">>>> {} done <<<", Thread.currentThread().getName());
         return "Success";

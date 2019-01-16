@@ -5,11 +5,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.RetryNTimes;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.integration.zookeeper.lock.ZookeeperLockRegistry;
 
 /**
  * description:
@@ -30,7 +32,7 @@ import org.springframework.context.annotation.PropertySource;
 @Slf4j
 public class CuratorConfiguration {
 
-    public static final long ZOOKEEPER_TIMEOUT = 120000;
+//    public static final long ZOOKEEPER_TIMEOUT = 120000;
 
     @Value("${spring.application.name}")
     private String serviceName;
@@ -52,6 +54,18 @@ public class CuratorConfiguration {
 
     @Setter
     private int connectionTimeoutMs;
+
+    /**
+     * ZookeeperLockRegistry initial
+     *
+     * @param client       client
+     * @param lockRootPath lockRootPath
+     * @return ZookeeperLockRegistry
+     */
+    @Bean
+    public ZookeeperLockRegistry zookeeperLockRegistry(CuratorFramework client, @Qualifier("lockRootPath") String lockRootPath) {
+        return new ZookeeperLockRegistry(client, lockRootPath);
+    }
 
     @Bean(initMethod = "start")
     public CuratorFramework curatorFramework() {

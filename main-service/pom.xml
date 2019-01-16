@@ -45,16 +45,6 @@
             <artifactId>spring-integration-zookeeper</artifactId>
         </dependency>
         <!--<dependency>
-            <groupId>org.apache.curator</groupId>
-            <artifactId>curator-framework</artifactId>
-            <version>${curator-framework.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.curator</groupId>
-            <artifactId>curator-recipes</artifactId>
-            <version>${curator-framework.version}</version>
-        </dependency>-->
-        <dependency>
             <groupId>org.apache.zookeeper</groupId>
             <artifactId>zookeeper</artifactId>
             <version>3.4.12</version>
@@ -72,7 +62,7 @@
                     <groupId>log4j</groupId>
                 </exclusion>
             </exclusions>
-        </dependency>
+        </dependency>-->
         <!--log4j日志-->
         <!--<dependency>
             <groupId>org.springframework.boot</groupId>
