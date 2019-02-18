@@ -43,11 +43,11 @@ public class MyController {
 
     private final UDataRepository uDataRepository;
 
-    private final OmZookeeperLock zkLock;
+    private final ZookeeperLockRegistry zkLock;
 
     @Autowired
     public MyController(IMyService myService, StockerRepository stockerRepository,
-                        UDataRepository uDataRepository, OmZookeeperLock zookeeperLockRegistry) {
+                        UDataRepository uDataRepository, ZookeeperLockRegistry zookeeperLockRegistry) {
         this.myService = myService;
         this.stockerRepository = stockerRepository;
         this.uDataRepository = uDataRepository;
