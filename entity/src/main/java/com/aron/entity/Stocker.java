@@ -1,13 +1,11 @@
 package com.aron.entity;
 
-import com.aron.utils.Constant;
 import lombok.Data;
-import org.hibernate.annotations.GenericGenerator;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 
@@ -26,14 +24,10 @@ import java.io.Serializable;
 @Entity
 @Table(name = "FRSTOCKER")
 @Data
+@CacheConfig(cacheNames = "aronCache")
+@Cacheable
 //@IdentifierColumn("name")
-public class Stocker implements Serializable {
-
-    @Id
-    @Column(name = "id")
-    @GenericGenerator(name = "idGenerator", strategy = Constant.STRATEGY_REFERENCE)
-    @GeneratedValue(generator = "idGenerator")
-    private String id;
+public class Stocker extends BaseEntity implements Serializable {
 
     @Column(name = "stocker_id")
     private String stockerId;

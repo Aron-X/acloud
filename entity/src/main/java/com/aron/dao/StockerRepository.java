@@ -31,6 +31,6 @@ public interface StockerRepository extends JpaRepository<Stocker, String>, IStoc
     @Query(value = "select t.name,t.status from FRSTOCKER t where t.name like '%'||?1||'%'", nativeQuery = true)
     List<String[]> findAllByCondition(String name);
 
-    Stocker findByStockerId(Long stockerId);
+    Stocker findByStockerId(String stockerId);
 
 }

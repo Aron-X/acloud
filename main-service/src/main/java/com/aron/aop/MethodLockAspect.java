@@ -1,7 +1,7 @@
 package com.aron.aop;
 
-import com.aron.annotation.CacheLock;
-import com.aron.lock.RedisLock;
+import com.aron.annotation.MethodLock;
+import com.aron.lock.OmZookeeperLock;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 import java.lang.reflect.Method;
+import java.util.concurrent.locks.Lock;
 
 /**
  * description:
@@ -29,36 +30,40 @@ import java.lang.reflect.Method;
 @Aspect
 @Configuration
 @Slf4j
-public class LockAspect {
+public class MethodLockAspect {
 
-    private final RedisLock lock;
+//    private final RedisLock lock;
+
+    private OmZookeeperLock lockRegister;
 
     @Autowired
-    public LockAspect(RedisLock lockHandler) {
-        this.lock = lockHandler;
+    public MethodLockAspect(OmZookeeperLock lockRegister) {
+        this.lockRegister = lockRegister;
     }
 
-    @Pointcut("execution(public * *(..)) && @annotation(com.aron.annotation.CacheLock)")
+    @Pointcut("execution(public * *(..)) && @annotation(com.aron.annotation.MethodLock)")
     public void lockPoint() {
     }
 
     @Around("lockPoint()")
     public Object lockProcess(ProceedingJoinPoint joinPoint) {
         doBefore(joinPoint);
-        log.info("lockProcess start....");
+        log.debug("lockProcess start....");
         Object result = null;
+        String lockKey = getLockKey(joinPoint);
+        Lock lock = lockRegister.obtain(lockKey);
+        boolean acquired = true;
         try {
-            if (lock.lock()) {
-                result = joinPoint.proceed();
-            } else {
-                throw new RuntimeException("retrieve lock failed");
+            acquired = lock.tryLock();
+            //如果没有获取到所，则抛异常返回
+            if (!acquired) {
+                throw new RuntimeException("Please tries later");
             }
+            result = joinPoint.proceed();
         } catch (Throwable e) {
             e.printStackTrace();
         } finally {
-            // 为了让分布式锁的算法更稳键些，持有锁的客户端在解锁之前应该再检查一次自己的锁是否已经超时，再去做DEL操作，因为可能客户端因为某个耗时的操作而挂起，
-            // 操作完的时候锁因为超时已经被别人获得，这时就不必解锁了.
-            if (!lock.isLockExpired()) {
+            if (acquired) {
                 lock.unlock();
             }
         }
@@ -66,15 +71,14 @@ public class LockAspect {
     }
 
     private void doBefore(ProceedingJoinPoint joinPoint) {
-        log.info("init key start....");
-        String lockKey = getLockKey(joinPoint);
-        lock.setLockKey(lockKey);
+        log.debug("doBefore start....");
     }
 
     private String getLockKey(ProceedingJoinPoint pjp) {
         MethodSignature signature = (MethodSignature) pjp.getSignature();
         Method method = signature.getMethod();
-        CacheLock lockAnnotation = method.getAnnotation(CacheLock.class);
-        return String.format("%s#%s%s%s", lockAnnotation.key(), method.getDeclaringClass().getSimpleName(), lockAnnotation.delimiter(), method.getName());
+        MethodLock lockAnnotation = method.getAnnotation(MethodLock.class);
+        return String.format("%s_%s%s%s", lockAnnotation.key(), method.getDeclaringClass().getSimpleName(), lockAnnotation.delimiter(),
+                method.getName());
     }
 }

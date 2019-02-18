@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
+         updateCheck="false">
+    <!--Configuration API: http://www.ehcache.org/ehcache.xml-->
+
+    <diskStore path="Java.io.tmpdir"/>
+
+    <defaultCache eternal="false"
+                  maxElementsInMemory="200"
+                  overflowToDisk="false"
+                  diskPersistent="false"
+                  timeToIdleSeconds="60"
+                  timeToLiveSeconds="120"
+                  memoryStoreEvictionPolicy="LRU"/>
+
+    <!-- aronCache -->
+    <cache name="aronCache"
+           eternal="false"
+           maxElementsInMemory="200"
+           overflowToDisk="false"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="120"
+           memoryStoreEvictionPolicy="LRU">
+    </cache>
+
+</ehcache>

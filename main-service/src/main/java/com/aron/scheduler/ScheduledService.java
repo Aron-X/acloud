@@ -1,16 +1,17 @@
 package com.aron.scheduler;
 
-import com.aron.lock.CuratorConfiguration;
+import com.aron.lock.OmZookeeperLock;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.api.GetChildrenBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.integration.zookeeper.lock.ZookeeperLockRegistry;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.concurrent.locks.Lock;
 
 /**
  * description:
@@ -29,35 +30,49 @@ import java.util.concurrent.locks.Lock;
 @Component
 public class ScheduledService {
 
-    //@Scheduled(cron = "0/60 * * * * *")
-    public void scheduled() {
-        log.info(">>>> expire unused lock node <<<<");
+    @Autowired
+    private OmZookeeperLock zookeeperLockRegistry;
+
+    @Autowired
+    private CuratorFramework client;
+
+    @Autowired
+    private String lockRootPath;
+
+    /**
+     * 每天早上6点到晚上9点内每2分钟执行一次
+     */
+    private static final String EXPIRE_UNUSED_CRON = "0 0/2 6-21 * * *";
+
+    /**
+     * 每天凌晨2点执行一次
+     */
+    private static final String CLEAR_ALL_UNUSED_CRON = "0 0 2 * * ?";
+
+
+    /*@Scheduled(cron = EXPIRE_UNUSED_CRON)
+    public void clearExpireUnusedPath() {
+        log.debug(">>>> expire unused lock node <<<<");
+        zookeeperLockRegistry.expireUnusedOlderThan(60 * 1000);
     }
 
-    //@Scheduled(cron = "0/1 * * * * *")
-    public void removeUnusedPath() {
-        /*log.info("lockRegistry :{}", lockRegistry.toString());
-        GetChildrenBuilder children = zkClient.getChildren();
+    @Scheduled(cron = CLEAR_ALL_UNUSED_CRON)
+    public void clearAllUnusedPath() {
+        GetChildrenBuilder children = client.getChildren();
         try {
-            List<String> childPaths = children.forPath(zkLockConfig.getLockRoot());
+            List<String> childPaths = children.forPath(lockRootPath);
             if (childPaths == null || childPaths.isEmpty()) {
                 return;
             }
             for (String child : childPaths) {
-                log.info("child is {}", child);
-                Lock lock = lockRegistry.obtain(child);
-                boolean locked = lock.tryLock();
-                if (!locked) {
-                    log.info("locked: {} ,removed child is {}", locked, child);
-                    zkClient.delete()
-                            .deletingChildrenIfNeeded()
-                            .inBackground()
-                            .forPath(zkLockConfig.getLockRoot() + "/" + child);
-                }
+                log.debug("clear child is {}", child);
+                client.delete()
+                        .inBackground()
+                        .forPath(lockRootPath + "/" + child);
             }
         } catch (Exception e) {
             log.error("delete zk path children failed", e);
-        }*/
-    }
+        }
+    }*/
 
 }

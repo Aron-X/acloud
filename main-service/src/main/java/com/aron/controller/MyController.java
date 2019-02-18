@@ -1,11 +1,13 @@
 package com.aron.controller;
 
+import com.aron.annotation.MethodLock;
 import com.aron.dao.StockerRepository;
 import com.aron.dao.UDataRepository;
 import com.aron.entity.Stocker;
 import com.aron.entity.UData;
 import com.aron.entity.User;
 import com.aron.lock.CimLock;
+import com.aron.lock.OmZookeeperLock;
 import com.aron.service.IMyService;
 import com.aron.utils.ThreadContextHolder;
 import lombok.extern.slf4j.Slf4j;
@@ -20,9 +22,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 
@@ -39,17 +43,15 @@ public class MyController {
 
     private final UDataRepository uDataRepository;
 
-    private final CimLock cimLock;
-
-    private final ZookeeperLockRegistry zookeeperLockRegistry;
+    private final OmZookeeperLock zkLock;
 
     @Autowired
-    public MyController(IMyService myService, StockerRepository stockerRepository, UDataRepository uDataRepository, CimLock cimLock, ZookeeperLockRegistry zookeeperLockRegistry) {
+    public MyController(IMyService myService, StockerRepository stockerRepository,
+                        UDataRepository uDataRepository, OmZookeeperLock zookeeperLockRegistry) {
         this.myService = myService;
         this.stockerRepository = stockerRepository;
         this.uDataRepository = uDataRepository;
-        this.cimLock = cimLock;
-        this.zookeeperLockRegistry = zookeeperLockRegistry;
+        this.zkLock = zookeeperLockRegistry;
     }
 
     @RequestMapping("/show")
@@ -99,30 +101,37 @@ public class MyController {
     }
 
     /**
-     * this for zookeeperLockRegistry test case
+     * this for zkLock test case
      *
      * @return result
      */
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @GetMapping("/batch/update")
-    public String batchUpdate() {
-        Lock lock = zookeeperLockRegistry.obtain("MyController-batchUpdate");
-        boolean locked = true;
+    public String batchUpdate(String name) {
         log.info(">>>> {} enter in <<<", Thread.currentThread().getName());
+        Stocker stocker = stockerRepository.findById("Stocker.97307915077025792").orElse(null);
+
+        Lock lock = zkLock.obtain(stocker);
+        boolean locked = true;
         try {
             locked = lock.tryLock();
             if (!locked) {
+                log.info(">>>> {} get lock failed <<<", Thread.currentThread().getName());
                 return "please tried later ...";
             }
             log.info(">>>> {} get lock success <<<", Thread.currentThread().getName());
-            log.info(">>>> batchUpdate processing <<<");
+            log.info(">>>> {} batchUpdate processing <<<", Thread.currentThread().getName());
             //sleep here use to analog processing
-            Thread.sleep(6000);
+            if ("aron".equals(name)) {
+                myService.batchUpdate();
+            }
+            Thread.sleep(10000);
         } catch (Exception ex) {
             log.error("Fail to batchUpdate request", ex);
         } finally {
             if (locked) {
                 lock.unlock();
+                zkLock.expireUnusedOlderThan(20 * 1000);
             }
         }
         log.info(">>>> {} done <<<", Thread.currentThread().getName());
@@ -134,9 +143,9 @@ public class MyController {
      *
      * @return result
      */
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    /*@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @GetMapping("/my/batch/update")
-//    @CacheLock(key = "aron-test")
+//    @MethodLock(key = "aron-test")
     public String myBatchUpdate() {
         log.info(">>>> {} enter in <<<", Thread.currentThread().getName());
         boolean locked = false;
@@ -157,12 +166,32 @@ public class MyController {
         }
         log.info(">>>> {} done <<<", Thread.currentThread().getName());
         return "Success";
-    }
-
+    }*/
     @GetMapping("/udata/{refKey}")
     public List<UData> findUData(@PathVariable("refKey") String refKey) {
         List<UData> uDataList = uDataRepository.findByRefKey(refKey, User.class);
         return uDataList;
+    }
+
+    @GetMapping("/aron/test")
+    @Transactional(rollbackFor = Exception.class)
+    public Long findUData() {
+        long stockerCount = myService.getStockerCount();
+        System.out.println(1 / 0);
+        return stockerCount;
+    }
+
+    @GetMapping("/aron/test1")
+    @MethodLock
+    @Transactional(rollbackFor = Exception.class)
+    public Stocker testCache() {
+        return myService.testCache();
+    }
+
+    @GetMapping("/aron/test2")
+    @Transactional(rollbackFor = Exception.class)
+    public Stocker testCache2() {
+        return myService.testCache();
     }
 
 }

@@ -112,8 +112,11 @@ public class AronTests {
             stocker.setStockerId(String.valueOf(i));
             stocker.setName("stocker" + i);
             stockerRepository.save(stocker);
-            System.out.println(">>>>> " + stocker.getId());
+//            System.out.println(">>>>> " + stocker.getId());
         }
+        Stocker stocker1 = new Stocker();
+        Optional<Stocker> one = stockerRepository.findOne(Example.of(stocker1));
+
         /*Stocker stocker1 = stockerRepository.findOne(2L);
         Stocker stocker2 = stockerRepository.findOne(2L);
         Stocker stocker3 = stockerRepository.findOne(2L);

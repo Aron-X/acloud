@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 
 /**
  * description:
- * <p>CacheLock .<br/></p>
+ * <p>MethodLock .<br/></p>
  * <p>
  * change history:
  * date             defect#             person             comments
@@ -24,12 +24,12 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
-public @interface CacheLock {
+public @interface MethodLock {
 
     /**
      * @return key
      */
-    String key();
+    String key() default "Method";
 
-    String delimiter() default "#";
+    String delimiter() default "-";
 }

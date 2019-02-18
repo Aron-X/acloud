@@ -25,4 +25,8 @@ public interface IMyService {
     List getStockersByName(String name);
 
     void batchUpdate();
+
+    long getStockerCount();
+
+    Stocker testCache();
 }
