@@ -1,5 +1,6 @@
 package com.aron.scheduler;
 
+import com.aron.lock.CuratorConfiguration;
 import com.aron.lock.OmZookeeperLock;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -50,10 +51,10 @@ public class ScheduledService {
     private static final String CLEAR_ALL_UNUSED_CRON = "0 0 2 * * ?";
 
 
-    /*@Scheduled(cron = EXPIRE_UNUSED_CRON)
+    @Scheduled(cron = EXPIRE_UNUSED_CRON)
     public void clearExpireUnusedPath() {
         log.debug(">>>> expire unused lock node <<<<");
-        zookeeperLockRegistry.expireUnusedOlderThan(60 * 1000);
+        zookeeperLockRegistry.expireUnusedOlderThan(CuratorConfiguration.ZOOKEEPER_TIMEOUT);
     }
 
     @Scheduled(cron = CLEAR_ALL_UNUSED_CRON)
@@ -73,6 +74,6 @@ public class ScheduledService {
         } catch (Exception e) {
             log.error("delete zk path children failed", e);
         }
-    }*/
+    }
 
 }

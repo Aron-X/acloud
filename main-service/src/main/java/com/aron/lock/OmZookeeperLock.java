@@ -46,8 +46,6 @@ public class OmZookeeperLock implements ExpirableLockRegistry, DisposableBean {
 
     private static final String DEFAULT_ROOT = "/Spring-LockRegistry";
 
-    private static final long DEFAULT_EXPIRED_TIME = 60 * 1000;
-
     private final CuratorFramework client;
 
     private final OmZookeeperLock.KeyToPathStrategy keyToPath;

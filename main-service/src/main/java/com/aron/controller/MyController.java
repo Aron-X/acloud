@@ -43,11 +43,11 @@ public class MyController {
 
     private final UDataRepository uDataRepository;
 
-    private final ZookeeperLockRegistry zkLock;
+    private final OmZookeeperLock zkLock;
 
     @Autowired
     public MyController(IMyService myService, StockerRepository stockerRepository,
-                        UDataRepository uDataRepository, ZookeeperLockRegistry zookeeperLockRegistry) {
+                        UDataRepository uDataRepository, OmZookeeperLock zookeeperLockRegistry) {
         this.myService = myService;
         this.stockerRepository = stockerRepository;
         this.uDataRepository = uDataRepository;
@@ -112,9 +112,10 @@ public class MyController {
         Stocker stocker = stockerRepository.findById("Stocker.97307915077025792").orElse(null);
 
         Lock lock = zkLock.obtain(stocker);
+
         boolean locked = true;
         try {
-            locked = lock.tryLock();
+            locked = lock.tryLock(500, TimeUnit.MILLISECONDS);
             if (!locked) {
                 log.info(">>>> {} get lock failed <<<", Thread.currentThread().getName());
                 return "please tried later ...";
@@ -125,13 +126,12 @@ public class MyController {
             if ("aron".equals(name)) {
                 myService.batchUpdate();
             }
-            Thread.sleep(10000);
+            Thread.sleep(5000);
         } catch (Exception ex) {
             log.error("Fail to batchUpdate request", ex);
         } finally {
             if (locked) {
                 lock.unlock();
-                zkLock.expireUnusedOlderThan(20 * 1000);
             }
         }
         log.info(">>>> {} done <<<", Thread.currentThread().getName());

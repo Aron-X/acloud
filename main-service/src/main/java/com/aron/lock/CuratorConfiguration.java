@@ -32,7 +32,7 @@ import org.springframework.integration.zookeeper.lock.ZookeeperLockRegistry;
 @Slf4j
 public class CuratorConfiguration {
 
-//    public static final long ZOOKEEPER_TIMEOUT = 120000;
+    public static final long ZOOKEEPER_TIMEOUT = 120000;
 
     @Value("${spring.application.name}")
     private String serviceName;
@@ -63,8 +63,8 @@ public class CuratorConfiguration {
      * @return ZookeeperLockRegistry
      */
     @Bean
-    public ZookeeperLockRegistry zookeeperLockRegistry(CuratorFramework client, @Qualifier("lockRootPath") String lockRootPath) {
-        return new ZookeeperLockRegistry(client, lockRootPath);
+    public OmZookeeperLock zookeeperLockRegistry(CuratorFramework client, @Qualifier("lockRootPath") String lockRootPath) {
+        return new OmZookeeperLock(client, lockRootPath);
     }
 
     @Bean(initMethod = "start")
