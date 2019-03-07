@@ -1,4 +1,4 @@
-package com.aron.generator;
+package com.aron;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.HibernateException;
@@ -224,8 +224,20 @@ public class SnowflakeIDWorker implements IdentifierGenerator {
 
     @Override
     public Serializable generate(SharedSessionContractImplementor session, Object object) throws HibernateException {
+        return generateId(object.getClass());
+    }
+
+    public String generateId(Class<?> clazz) {
         long nextID = nextID();
         log.debug("next id is :" + nextID);
-        return String.format("%s.%s", object.getClass().getSimpleName(), nextID);
+        return String.format("%s.%s", clazz.getSimpleName(), nextID);
+    }
+
+    public static SnowflakeIDWorker getInstance() {
+        return SingletonHolder.INSTANCE;
+    }
+
+    private static class SingletonHolder {
+        private static final SnowflakeIDWorker INSTANCE = new SnowflakeIDWorker();
     }
 }

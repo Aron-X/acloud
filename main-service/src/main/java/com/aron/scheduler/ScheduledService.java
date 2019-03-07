@@ -11,6 +11,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -54,12 +55,15 @@ public class ScheduledService {
     @Scheduled(cron = EXPIRE_UNUSED_CRON)
     public void clearExpireUnusedPath() {
         log.debug(">>>> expire unused lock node <<<<");
-        zookeeperLockRegistry.expireUnusedOlderThan(CuratorConfiguration.ZOOKEEPER_TIMEOUT);
+        zookeeperLockRegistry.expireUnusedOlderThan(CuratorConfiguration.ZK_PATH_EXPIRED_TIME);
     }
 
     @Scheduled(cron = CLEAR_ALL_UNUSED_CRON)
     public void clearAllUnusedPath() {
         GetChildrenBuilder children = client.getChildren();
+        if (StringUtils.isEmpty(lockRootPath)) {
+            return;
+        }
         try {
             List<String> childPaths = children.forPath(lockRootPath);
             if (childPaths == null || childPaths.isEmpty()) {

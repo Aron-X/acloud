@@ -1,35 +1,33 @@
 package com.aron;
 
+import com.aron.annotation.DoMapping;
 import com.aron.dao.AddressRepository;
 import com.aron.dao.StockerRepository;
 import com.aron.dao.UserRepository;
 import com.aron.entity.Address;
 import com.aron.entity.Stocker;
-import com.aron.entity.User;
+import com.aron.entity.StockerItem;
 import com.aron.entity.pk.AddressPk;
-import com.aron.generator.SnowflakeIDWorker;
+import com.aron.service.BoFactory;
+import com.aron.service.StockerBO;
+import com.aron.service.StockerBOImpl;
+import com.aron.utils.ObjectIdentifier;
+import com.aron.utils.SpringContextUtil;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Example;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
 
-import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,19 +54,22 @@ public class AronTests {
     /**
      * JpaTransactionManager事务管理 .
      */
-    @Resource
-    private JpaTransactionManager tm;
+    /*@Resource
+    private JpaTransactionManager tm;*/
+
+    @Autowired
+    private BoFactory boFactory;
 
     @Test
     public void testSave() {
         //手动提交事务
-        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+        /*DefaultTransactionDefinition def = new DefaultTransactionDefinition();
         def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
         def.setTimeout(30);
         //事务状态
         TransactionStatus status = tm.getTransaction(def);
         try {
-            /*User user = new User();
+            *//*User user = new User();
             user.setAddress("chengdu");
             user.setAge(25);
             user.setSex("male");
@@ -76,7 +77,7 @@ public class AronTests {
                 user.setId(null);
                 user.setName("user" + i);
                 userRepository.save(user);
-            }*/
+            }*//*
 
             Stocker stocker = new Stocker();
             stocker.setSize(10.0);
@@ -96,7 +97,7 @@ public class AronTests {
                 tm.rollback(status);
             }
             throw new RuntimeException("[制卡动作]更新卡状态为制卡审批通过失败。");
-        }
+        }*/
     }
 
     @Test
@@ -206,6 +207,69 @@ public class AronTests {
         private String address;
 
         private Long grade;
+    }
+
+    @Test
+    public void test10() {
+        Query nativeQuery = entityManager.createNativeQuery("select name from FRSTOCKER where id=?", String.class);
+        nativeQuery.setParameter(1, "Stocker.97307915685199872");
+        List resultList = nativeQuery.getResultList();
+        String singleResult = (String) nativeQuery.getSingleResult();
+    }
+
+    @Test
+    public void test11() {
+        String sid = SnowflakeIDWorker.getInstance().generateId(Stocker.class);
+
+        Stocker stocker = stockerRepository.findById("123").orElse(null);
+        stocker.setName("update1");
+        stocker.setId(sid);
+        stockerRepository.save(stocker);
+    }
+
+    @Test
+    public void test12() {
+        ObjectIdentifier objectIdentifier = new ObjectIdentifier();
+        objectIdentifier.setReferenceKey("123");
+
+        StockerBO stockerBO1 = boFactory.convertObjectIdentifierToBO(objectIdentifier, StockerBOImpl.class);
+
+//        List<StockerItem> stockerInfos = stockerBO1.getStockerItems();
+        //StockerInfo stockerInfo = stockerBO1.getStockerInfo();
+        stockerBO1.setName("this is Aron XXXX");
+        List<StockerItem> stockerInfos = new ArrayList<>();
+        StockerItem stockerItem = new StockerItem();
+        stockerItem.setId("StockerItem.155109141474443264-test");
+        stockerItem.setMaxCount(100);
+        stockerItem.setRefkey("123");
+        stockerItem.setStockerInfo("lalala");
+
+        stockerInfos.add(stockerItem);
+
+        stockerBO1.setStockerItems(stockerInfos);
+
+        //stockerBO1.pushChanges();
+
+        List<StockerItem> stockerItems = stockerBO1.getStockerItems();
+        System.out.println(">>>>>" + stockerBO1.toString());
+    }
+
+    @Test
+    public void test13() {
+        ObjectIdentifier objectIdentifier = new ObjectIdentifier();
+        objectIdentifier.setReferenceKey("123");
+        StockerBOImpl stockerBO1 = boFactory.convertObjectIdentifierToBO(objectIdentifier, StockerBOImpl.class);
+
+        StockerBOImpl bean1 = SpringContextUtil.getBean(StockerBOImpl.class, new Stocker());
+        StockerBOImpl bean2 = SpringContextUtil.getBean(StockerBOImpl.class, new Stocker());
+        StockerBOImpl bean3 = SpringContextUtil.getBean(StockerBOImpl.class, new Stocker());
+
+        List<StockerItem> stockerItems = stockerBO1.getStockerItems();
+
+        System.out.println(stockerBO1.toString());
+        System.out.println(bean1.toString());
+        System.out.println(bean2.toString());
+        System.out.println(bean3.toString());
     }
 
 }

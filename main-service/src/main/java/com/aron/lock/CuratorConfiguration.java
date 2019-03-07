@@ -32,7 +32,7 @@ import org.springframework.integration.zookeeper.lock.ZookeeperLockRegistry;
 @Slf4j
 public class CuratorConfiguration {
 
-    public static final long ZOOKEEPER_TIMEOUT = 120000;
+    public static final long ZK_PATH_EXPIRED_TIME = 120000;
 
     @Value("${spring.application.name}")
     private String serviceName;

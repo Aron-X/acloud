@@ -1,6 +1,8 @@
 package com.aron.entity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 
@@ -21,6 +23,7 @@ import java.io.Serializable;
  * @date: 2018/6/25 11:31
  * @copyright: 2018, FA Software (Shanghai) Co., Ltd. All Rights Reserved.
  */
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "FRSTOCKER")
 @Data

@@ -1,12 +1,9 @@
 package com.aron.entity;
 
-import com.aron.utils.Constant;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
@@ -36,8 +33,8 @@ public abstract class BaseEntity {
      */
     @Id
     @Column(name = "ID")
-    @GenericGenerator(name = "idGenerator", strategy = Constant.STRATEGY_REFERENCE)
-    @GeneratedValue(generator = "idGenerator")
+    //@GenericGenerator(name = "idGenerator", strategy = Constant.STRATEGY_REFERENCE)
+    //@GeneratedValue(generator = "idGenerator")
     private String id;
 
 }

@@ -21,7 +21,7 @@ import java.util.List;
  * @copyright: 2018, FA Software (Shanghai) Co., Ltd. All Rights Reserved.
  */
 @Repository
-public interface StockerRepository extends JpaRepository<Stocker, String>, IStockerCustomRepository {
+public interface StockerRepository extends AronRepository<Stocker>, IStockerCustomRepository {
 
     List<Stocker> findByStatus(String status, Pageable pageable);
 

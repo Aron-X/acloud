@@ -22,7 +22,7 @@ public class Constant {
 
     }
 
-    public final static String STRATEGY_REFERENCE = "com.aron.generator.SnowflakeIDWorker";
+    public final static String STRATEGY_REFERENCE = "com.aron.SnowflakeIDWorker";
 
     public static <M> Long getId(M target) {
         BeanInfo beanInfo = null;
