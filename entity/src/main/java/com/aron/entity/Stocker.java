@@ -1,15 +1,23 @@
 package com.aron.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.annotation.JSONType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.springframework.boot.jackson.JsonComponent;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * description:
@@ -29,6 +37,8 @@ import java.io.Serializable;
 @Data
 @CacheConfig(cacheNames = "aronCache")
 @Cacheable
+@ToString(exclude = "stockerItems")
+@JSONType(ignores = "stockerItems")
 //@IdentifierColumn("name")
 public class Stocker extends BaseEntity implements Serializable {
 
@@ -46,4 +56,8 @@ public class Stocker extends BaseEntity implements Serializable {
 
     @Column(name = "available_flag")
     private Boolean availableFlag;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "refkey")
+    private List<StockerItem> stockerItems;
 }

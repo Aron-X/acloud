@@ -1,6 +1,5 @@
 package com.aron;
 
-import com.aron.annotation.DoMapping;
 import com.aron.dao.AddressRepository;
 import com.aron.dao.StockerRepository;
 import com.aron.dao.UserRepository;
@@ -8,9 +7,10 @@ import com.aron.entity.Address;
 import com.aron.entity.Stocker;
 import com.aron.entity.StockerItem;
 import com.aron.entity.pk.AddressPk;
-import com.aron.service.BoFactory;
-import com.aron.service.StockerBO;
-import com.aron.service.StockerBOImpl;
+import com.aron.bo.BoFactory;
+import com.aron.service.IMyService;
+import com.aron.bo.StockerBO;
+import com.aron.bo.StockerBOImpl;
 import com.aron.utils.ObjectIdentifier;
 import com.aron.utils.SpringContextUtil;
 import lombok.Data;
@@ -19,9 +19,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Example;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -48,57 +48,14 @@ public class AronTests {
     @Autowired
     private SnowflakeIDWorker snowflakeIDWorker;
 
+    @Autowired
+    private IMyService myService;
+
     @PersistenceContext
     private EntityManager entityManager;
 
-    /**
-     * JpaTransactionManager事务管理 .
-     */
-    /*@Resource
-    private JpaTransactionManager tm;*/
-
     @Autowired
     private BoFactory boFactory;
-
-    @Test
-    public void testSave() {
-        //手动提交事务
-        /*DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-        def.setTimeout(30);
-        //事务状态
-        TransactionStatus status = tm.getTransaction(def);
-        try {
-            *//*User user = new User();
-            user.setAddress("chengdu");
-            user.setAge(25);
-            user.setSex("male");
-            for (int i = 0; i < 5; i++) {
-                user.setId(null);
-                user.setName("user" + i);
-                userRepository.save(user);
-            }*//*
-
-            Stocker stocker = new Stocker();
-            stocker.setSize(10.0);
-            stocker.setStatus("LIVE");
-            stocker.setAvailableFlag(true);
-            for (int i = 0; i < 1; i++) {
-//                stocker.setId(null);
-                stocker.setStockerId(String.valueOf(i));
-                stocker.setName("stocker" + i);
-                stockerRepository.save(stocker);
-            }
-            //此处写持久层逻辑
-            tm.commit(status);
-        } catch (Exception e) {
-            log.error("出现异常，事务回滚", e);
-            if (!status.isCompleted()) {
-                tm.rollback(status);
-            }
-            throw new RuntimeException("[制卡动作]更新卡状态为制卡审批通过失败。");
-        }*/
-    }
 
     @Test
     public void testSessionCache() {
@@ -232,7 +189,7 @@ public class AronTests {
         ObjectIdentifier objectIdentifier = new ObjectIdentifier();
         objectIdentifier.setReferenceKey("123");
 
-        StockerBO stockerBO1 = boFactory.convertObjectIdentifierToBO(objectIdentifier, StockerBOImpl.class);
+        StockerBO stockerBO1 = boFactory.convertObjectIdentifierToBO(objectIdentifier, StockerBO.class);
 
 //        List<StockerItem> stockerInfos = stockerBO1.getStockerItems();
         //StockerInfo stockerInfo = stockerBO1.getStockerInfo();
@@ -248,8 +205,6 @@ public class AronTests {
 
         stockerBO1.setStockerItems(stockerInfos);
 
-        //stockerBO1.pushChanges();
-
         List<StockerItem> stockerItems = stockerBO1.getStockerItems();
         System.out.println(">>>>>" + stockerBO1.toString());
     }
@@ -258,11 +213,11 @@ public class AronTests {
     public void test13() {
         ObjectIdentifier objectIdentifier = new ObjectIdentifier();
         objectIdentifier.setReferenceKey("123");
-        StockerBOImpl stockerBO1 = boFactory.convertObjectIdentifierToBO(objectIdentifier, StockerBOImpl.class);
+        StockerBO stockerBO1 = boFactory.convertObjectIdentifierToBO(objectIdentifier, StockerBO.class);
 
-        StockerBOImpl bean1 = SpringContextUtil.getBean(StockerBOImpl.class, new Stocker());
-        StockerBOImpl bean2 = SpringContextUtil.getBean(StockerBOImpl.class, new Stocker());
-        StockerBOImpl bean3 = SpringContextUtil.getBean(StockerBOImpl.class, new Stocker());
+        StockerBO bean1 = SpringContextUtil.getBean(StockerBOImpl.class, new Stocker());
+        StockerBO bean2 = SpringContextUtil.getBean(StockerBOImpl.class, new Stocker());
+        StockerBO bean3 = SpringContextUtil.getBean(StockerBOImpl.class, new Stocker());
 
         List<StockerItem> stockerItems = stockerBO1.getStockerItems();
 
@@ -270,6 +225,20 @@ public class AronTests {
         System.out.println(bean1.toString());
         System.out.println(bean2.toString());
         System.out.println(bean3.toString());
+    }
+
+    @Test
+    //@Transactional(rollbackFor = Exception.class)
+    public void test14() {
+        Optional<Stocker> stocker = stockerRepository.findById("123");
+
+        List<StockerItem> stockerItems = stocker.get().getStockerItems();
+        StockerItem stockerItem = stockerItems.get(0);
+        stockerItem.setStockerInfo("asdasd");
+
+        stocker.get().setName("this is my test");
+        stockerRepository.save(stocker.get());
+        System.out.println(stocker.get().toString());
     }
 
 }

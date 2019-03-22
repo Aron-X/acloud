@@ -1,17 +1,19 @@
 package com.aron.service;
 
+import com.aron.annotation.BizCaller;
 import com.aron.annotation.IdentifierColumn;
+import com.aron.bo.BoFactory;
+import com.aron.bo.StockerBO;
 import com.aron.dao.impl.BatchDaoImpl;
 import com.aron.dao.StockerRepository;
 import com.aron.entity.Stocker;
+import com.aron.entity.StockerItem;
+import com.aron.utils.ObjectIdentifier;
 import com.aron.utils.PageUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Example;
-import org.springframework.data.redis.cache.RedisCacheManager;
-import org.springframework.integration.zookeeper.lock.ZookeeperLockRegistry;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,10 +22,9 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Lock;
 
 /**
  * description:
@@ -53,6 +54,9 @@ public class MyServiceImpl implements IMyService {
 
     @PersistenceContext
     private EntityManager entityManager;
+
+    @Autowired
+    private BoFactory boFactory;
 
 //    private final ZookeeperLockRegistry zkLock;
 
@@ -150,4 +154,45 @@ public class MyServiceImpl implements IMyService {
 //        System.out.println(1 / 0);
 //        batchDao.batchUpdate(stockers);
     }
+
+    @Override
+    @BizCaller
+    @Transactional(rollbackFor = Exception.class)
+    public void invokeBo(String name) {
+        ObjectIdentifier objectIdentifier = new ObjectIdentifier();
+        objectIdentifier.setReferenceKey("123");
+
+        StockerBO stockerBO1 = boFactory.convertObjectIdentifierToBO(objectIdentifier, StockerBO.class);
+
+//        List<StockerItem> stockerInfos = stockerBO1.getStockerItems();
+        //StockerInfo stockerInfo = stockerBO1.getStockerInfo();
+        stockerBO1.setName(name);
+        List<StockerItem> stockerInfos = new ArrayList<>();
+        StockerItem stockerItem = new StockerItem();
+        stockerItem.setId("StockerItem.155109141474443264-test");
+        stockerItem.setMaxCount(100);
+        stockerItem.setRefkey("123");
+        stockerItem.setStockerInfo("lalala");
+        stockerInfos.add(stockerItem);
+
+        stockerBO1.setStockerItems(stockerInfos);
+
+        List<StockerItem> stockerItems = stockerBO1.getStockerItems();
+        System.out.println(">>>>>" + stockerBO1.toString());
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void myTest() {
+        Optional<Stocker> stocker = stockerRepository.findById("123");
+        List<StockerItem> stockerItems = stocker.get().getStockerItems();
+        StockerItem stockerItem = stockerItems.get(0);
+        stockerItem.setStockerInfo("444");
+
+        stocker.get().setName("this is my 444");
+        stockerRepository.save(stocker.get());
+        System.out.println(stocker.get().toString());
+        
+        System.out.println(1 / 0);
+    }
+
 }

@@ -1,2 +1,5 @@
 server:
   port: 3003
+spring:
+  jpa:
+    open-in-view: true

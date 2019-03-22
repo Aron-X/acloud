@@ -16,7 +16,7 @@ import java.util.List;
  * @date: 2018/6/25 11:30
  * @copyright: 2018, FA Software (Shanghai) Co., Ltd. All Rights Reserved.
  */
-public interface IMyService {
+public interface IMyService extends BaseService {
 
     List<Stocker> queryWithNameAndStatus(String name, String status);
 
@@ -29,4 +29,8 @@ public interface IMyService {
     long getStockerCount();
 
     Stocker testCache();
+
+    void invokeBo(String name);
+
+    void myTest();
 }

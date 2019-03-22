@@ -1,5 +1,6 @@
-package com.aron.service;
+package com.aron.bo;
 
+import com.aron.annotation.Business;
 import com.aron.annotation.DoChild;
 import com.aron.annotation.DoMapping;
 import com.aron.annotation.DoProperty;
@@ -12,7 +13,6 @@ import com.aron.entity.StockerItem;
 import com.aron.utils.Changeable;
 import com.aron.utils.ObjectIdentifier;
 import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -20,13 +20,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -45,10 +41,10 @@ import java.util.Optional;
  * @copyright: 2019, FA Software (Chengdu) Co., Ltd. All Rights Reserved.
  */
 @DoMapping(clazz = Stocker.class)
-@Service()
+@Business("newStockerBOImpl")
 @Scope("prototype")
 @ToString
-public class StockerBOImpl implements StockerBO {
+public class StockerBOImpl extends AbstractBO<Stocker> implements StockerBO {
 
     @Autowired
     private StockerRepository stockerRepository;
@@ -59,16 +55,11 @@ public class StockerBOImpl implements StockerBO {
     @Autowired
     private StockerItemRepository stockerItemRepository;
 
-    /**
-     * BO main entity
-     */
-    private final Stocker stockerDo;
-
     public StockerBOImpl(Stocker stockerDo) {
-        this.stockerDo = stockerDo;
+        super(stockerDo);
     }
 
-    @Getter(value = AccessLevel.PROTECTED)
+    @Getter(value = AccessLevel.PUBLIC)
     @Setter(value = AccessLevel.PROTECTED)
     @DoProperty(attributes = {"id", "stockerId"}, mapping = {"referenceKey", "value"}, type = DoProperty.Type.POJO)
     private ObjectIdentifier theIdentify;
@@ -104,23 +95,27 @@ public class StockerBOImpl implements StockerBO {
     private Changeable<StockerInfo> theStockerInfo;
 
     @Transactional(rollbackFor = Exception.class)
-    public void pushChanges() {
-        System.out.println("==== save changes ====");
-        stockerRepository.save(this.stockerDo);
+    protected void pushChanges() {
+        System.out.println("==== start push changes ====");
+        stockerRepository.save(getEntity());
         stockerInfoRepository.modify(theStockerInfo);
         stockerItemRepository.modifyAll(theStockerItems);
         //TODO: 所有子表更新优化为一行代码
+        System.out.println("==== end push changes ====");
     }
 
+    @Override
     public void setName(String pName) {
         this.theName = pName;
-        this.stockerDo.setName(pName);//TODO： 优化自动映射
+        getEntity().setName(pName);//TODO： 优化自动映射
     }
 
+    @Override
     public String getName() {
         return this.theName;
     }
 
+    @Override
     public void setStockerItems(List<StockerItem> stockerItems) {
         if (theStockerItems == null) {
             List<StockerItem> stockerItems1 = getStockerItems();
@@ -128,6 +123,7 @@ public class StockerBOImpl implements StockerBO {
                 theStockerItems = new ArrayList<>();
             }
         }
+        BigDecimal bigDecimal = new BigDecimal("");
         ///====== below is logic ========
         for (Changeable<StockerItem> theStockerItem : theStockerItems) {
             StockerItem stockerItem = theStockerItem.get();
@@ -137,16 +133,20 @@ public class StockerBOImpl implements StockerBO {
         }
 
         for (StockerItem stockerInfo : stockerItems) {
+            boolean exist = false;
             for (Changeable<StockerItem> theStockerItem : theStockerItems) {
                 if (theStockerItem.get().getId().equals(stockerInfo.getId())) {
-                    theStockerItem.setStatus(Changeable.Status.DELETED);
-                    return;
+                    exist = true;
+                    continue;
                 }
             }
-            theStockerItems.add(Changeable.of(stockerInfo, Changeable.Status.CHANGED));
+            if (!exist) {
+                theStockerItems.add(Changeable.of(stockerInfo, Changeable.Status.CHANGED));
+            }
         }
     }
 
+    @Override
     public List<StockerItem> getStockerItems() {
         if (this.getTheStockerItems() == null) {
             List<StockerItem> result =
@@ -168,6 +168,7 @@ public class StockerBOImpl implements StockerBO {
         return result;
     }
 
+    @Override
     public StockerInfo getStockerInfo() {
         if (theStockerInfo == null) {
             Optional<StockerInfo> result =
@@ -181,6 +182,7 @@ public class StockerBOImpl implements StockerBO {
         return theStockerInfo.getStatus() == Changeable.Status.DELETED ? null : theStockerInfo.get();
     }
 
+    @Override
     public StockerInfo setStockerInfo(StockerInfo data) {
         if (this.theStockerInfo == null) {
             StockerInfo stockerInfo = new StockerInfo();

@@ -1,4 +1,4 @@
-package com.aron.service;
+package com.aron.bo;
 
 
 import com.aron.annotation.DoChild;
@@ -9,8 +9,6 @@ import com.aron.utils.Changeable;
 import com.aron.utils.ObjectIdentifier;
 import com.aron.utils.SpringContextUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
@@ -56,6 +54,7 @@ public class BoFactory {
         } catch (Exception e) {
             log.error("create BO failed !", e);
         }
+        BizThreadHolder.setBizObject(bo);
         return bo;
     }
 

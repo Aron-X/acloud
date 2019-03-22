@@ -67,7 +67,8 @@ public class CuratorConfiguration {
         return new OmZookeeperLock(client, lockRootPath);
     }
 
-    @Bean(initMethod = "start")
+    //(initMethod = "start")
+    @Bean
     public CuratorFramework curatorFramework() {
         log.info(">>>>> zookeeper connectString:{}, sessionTimeoutMs:{}, connectionTimeoutMs:{}, retryTimes:{}, sleepBetweenRetries:{}",
                 connectString, sessionTimeoutMs, connectionTimeoutMs, retryTimes, sleepBetweenRetries);

@@ -4,6 +4,7 @@ import com.aron.annotation.MethodLock;
 import com.aron.dao.StockerRepository;
 import com.aron.dao.UDataRepository;
 import com.aron.entity.Stocker;
+import com.aron.entity.StockerItem;
 import com.aron.entity.UData;
 import com.aron.entity.User;
 import com.aron.lock.CimLock;
@@ -192,6 +193,36 @@ public class MyController {
     @Transactional(rollbackFor = Exception.class)
     public Stocker testCache2() {
         return myService.testCache();
+    }
+
+    @GetMapping("/aron/test3")
+    @Transactional(rollbackFor = Exception.class)
+    public void test3() {
+        /*Optional<Stocker> stocker = stockerRepository.findById("123");
+
+        List<StockerItem> stockerItems = stocker.get().getStockerItems();
+        StockerItem stockerItem = stockerItems.get(0);
+        stockerItem.setStockerInfo("222");
+
+        stocker.get().setName("this is my 222");
+        stockerRepository.save(stocker.get());
+        System.out.println(stocker.get().toString());*/
+        try {
+
+            myService.myTest();
+
+        } catch (Exception e) {
+            System.out.println("error");
+        }
+        Optional<Stocker> stocker = stockerRepository.findById("123");
+
+        List<StockerItem> stockerItems = stocker.get().getStockerItems();
+        StockerItem stockerItem = stockerItems.get(0);
+        stockerItem.setStockerInfo("qwe");
+
+        stocker.get().setName("this is my qwe");
+        stockerRepository.save(stocker.get());
+        System.out.println(stocker.get().toString());
     }
 
 }

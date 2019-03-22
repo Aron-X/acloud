@@ -1,4 +1,4 @@
-package com.aron.service;
+package com.aron.bo;
 
 import com.aron.entity.StockerInfo;
 import com.aron.entity.StockerItem;
@@ -19,8 +19,6 @@ import java.util.List;
  * @copyright: 2019, FA Software (Chengdu) Co., Ltd. All Rights Reserved.
  */
 public interface StockerBO extends BaseBO {
-    void pushChanges();
-
     void setName(String pName);
 
     String getName();
