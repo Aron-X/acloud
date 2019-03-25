@@ -1,5 +1,6 @@
 package com.aron;
 
+import com.alibaba.fastjson.JSONObject;
 import com.aron.dao.AddressRepository;
 import com.aron.dao.StockerRepository;
 import com.aron.dao.UserRepository;
@@ -8,6 +9,8 @@ import com.aron.entity.Stocker;
 import com.aron.entity.StockerItem;
 import com.aron.entity.pk.AddressPk;
 import com.aron.bo.BoFactory;
+import com.aron.kafka.MessageSender;
+import com.aron.kafka.dto.RequestReply;
 import com.aron.service.IMyService;
 import com.aron.bo.StockerBO;
 import com.aron.bo.StockerBOImpl;
@@ -28,7 +31,9 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RunWith(SpringRunner.class)
@@ -56,6 +61,9 @@ public class AronTests {
 
     @Autowired
     private BoFactory boFactory;
+
+    @Autowired
+    private MessageSender messageSender;
 
     @Test
     public void testSessionCache() {
@@ -239,6 +247,16 @@ public class AronTests {
         stocker.get().setName("this is my test");
         stockerRepository.save(stocker.get());
         System.out.println(stocker.get().toString());
+    }
+
+    @Test
+    public void test15() {
+        RequestReply requestReply = new RequestReply();
+        Map<String, Object> data = new HashMap<>();
+        data.put("name", "lalalala");
+        JSONObject jsonObject = new JSONObject(data);
+        requestReply.setData(jsonObject.toJSONString());
+        messageSender.sendAndReceive("release-request", requestReply);
     }
 
 }
