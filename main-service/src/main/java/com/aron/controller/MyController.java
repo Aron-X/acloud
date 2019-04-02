@@ -216,13 +216,13 @@ public class MyController {
         }
         Optional<Stocker> stocker = stockerRepository.findById("123");
 
-        List<StockerItem> stockerItems = stocker.get().getStockerItems();
+        /*List<StockerItem> stockerItems = stocker.get().getStockerItems();
         StockerItem stockerItem = stockerItems.get(0);
         stockerItem.setStockerInfo("qwe");
 
         stocker.get().setName("this is my qwe");
         stockerRepository.save(stocker.get());
-        System.out.println(stocker.get().toString());
+        System.out.println(stocker.get().toString());*/
     }
 
 }

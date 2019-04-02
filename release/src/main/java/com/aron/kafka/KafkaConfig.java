@@ -1,13 +1,12 @@
 package com.aron.kafka;
 
-import com.aron.kafka.dto.RequestReply;
+import com.alibaba.fastjson.JSONObject;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -82,39 +81,41 @@ public class KafkaConfig {
     }
 
     @Bean
-    public ProducerFactory<String, RequestReply> producerFactory() {
+    public ProducerFactory<String, JSONObject> producerFactory() {
         return new DefaultKafkaProducerFactory<>(producerConfigs());
     }
 
     @Bean
-    public KafkaTemplate<String, RequestReply> kafkaTemplate() {
+    public KafkaTemplate<String, JSONObject> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 
     @Bean
-    public ReplyingKafkaTemplate<String, RequestReply, RequestReply> replyKafkaTemplate(ProducerFactory<String, RequestReply> pf,
-                                                                                        KafkaMessageListenerContainer<String,
-                                                                                                RequestReply> container) {
-        ReplyingKafkaTemplate<String, RequestReply, RequestReply> replyingKafkaTemplate = new ReplyingKafkaTemplate<>(pf, container);
+    public ReplyingKafkaTemplate<String, JSONObject, JSONObject> replyKafkaTemplate(ProducerFactory<String, JSONObject> pf,
+                                                                                    KafkaMessageListenerContainer<String,
+                                                                                            JSONObject> container) {
+        ReplyingKafkaTemplate<String, JSONObject, JSONObject> replyingKafkaTemplate = new ReplyingKafkaTemplate<>(pf, container);
         replyingKafkaTemplate.setReplyTimeout(getReplyTimeout());
         return replyingKafkaTemplate;
     }
 
     @Bean
-    public KafkaMessageListenerContainer<String, RequestReply> replyContainer(ConsumerFactory<String, RequestReply> cf) {
+    public KafkaMessageListenerContainer<String, JSONObject> replyContainer(ConsumerFactory<String, JSONObject> cf) {
         ContainerProperties containerProperties = new ContainerProperties(getReplyTopic());
         return new KafkaMessageListenerContainer<>(cf, containerProperties);
     }
 
     @Bean
-    public ConsumerFactory<String, RequestReply> consumerFactory() {
+    public ConsumerFactory<String, JSONObject> consumerFactory() {
+        JsonDeserializer<JSONObject> deserializer = new JsonDeserializer<>(JSONObject.class);
+        //deserializer.addTrustedPackages("com.aron.kafka.dto", "com.aron.kafka.dto.gson", "com.fa.cim.dto");
         return new DefaultKafkaConsumerFactory<>(consumerConfigs(), new StringDeserializer(),
-                new JsonDeserializer<>(RequestReply.class));
+                deserializer);
     }
 
     @Bean
-    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, RequestReply>> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, RequestReply> factory = new ConcurrentKafkaListenerContainerFactory<>();
+    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, JSONObject>> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, JSONObject> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         //set reply template
         factory.setReplyTemplate(kafkaTemplate());

@@ -37,11 +37,13 @@ import java.util.List;
 @Data
 @CacheConfig(cacheNames = "aronCache")
 @Cacheable
-@ToString(exclude = "stockerItems")
-@JSONType(ignores = "stockerItems")
+//@ToString(exclude = "stockerItems")
+//@JSONType(ignores = "stockerItems")
 //@IdentifierColumn("name")
 public class Stocker extends BaseEntity implements Serializable {
 
+    private static final long serialVersionUID = -3340209616868149165L;
+    
     @Column(name = "stocker_id")
     private String stockerId;
 
@@ -57,7 +59,7 @@ public class Stocker extends BaseEntity implements Serializable {
     @Column(name = "available_flag")
     private Boolean availableFlag;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    /*@OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "refkey")
-    private List<StockerItem> stockerItems;
+    private List<StockerItem> stockerItems;*/
 }

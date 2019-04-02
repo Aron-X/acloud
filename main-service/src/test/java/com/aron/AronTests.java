@@ -1,6 +1,7 @@
 package com.aron;
 
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.aron.dao.AddressRepository;
 import com.aron.dao.StockerRepository;
 import com.aron.dao.UserRepository;
@@ -9,13 +10,18 @@ import com.aron.entity.Stocker;
 import com.aron.entity.StockerItem;
 import com.aron.entity.pk.AddressPk;
 import com.aron.bo.BoFactory;
+import com.aron.kafka.JsonTool;
 import com.aron.kafka.MessageSender;
+import com.aron.kafka.dto.Request;
 import com.aron.kafka.dto.RequestReply;
+import com.aron.kafka.dto.RequestUser;
+import com.aron.kafka.dto.gson.UserReleaseBean;
 import com.aron.service.IMyService;
 import com.aron.bo.StockerBO;
 import com.aron.bo.StockerBOImpl;
 import com.aron.utils.ObjectIdentifier;
 import com.aron.utils.SpringContextUtil;
+import com.fa.cim.dto.CimRequestReply;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -24,16 +30,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Example;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RunWith(SpringRunner.class)
@@ -240,23 +243,61 @@ public class AronTests {
     public void test14() {
         Optional<Stocker> stocker = stockerRepository.findById("123");
 
-        List<StockerItem> stockerItems = stocker.get().getStockerItems();
+        /*List<StockerItem> stockerItems = stocker.get().getStockerItems();
         StockerItem stockerItem = stockerItems.get(0);
         stockerItem.setStockerInfo("asdasd");
 
         stocker.get().setName("this is my test");
         stockerRepository.save(stocker.get());
-        System.out.println(stocker.get().toString());
+        System.out.println(stocker.get().toString());*/
     }
 
     @Test
     public void test15() {
-        RequestReply requestReply = new RequestReply();
-        Map<String, Object> data = new HashMap<>();
-        data.put("name", "lalalala");
-        JSONObject jsonObject = new JSONObject(data);
-        requestReply.setData(jsonObject.toJSONString());
-        messageSender.sendAndReceive("release-request", requestReply);
+        Request request = new Request();
+        Stocker stocker = stockerRepository.findById("123").orElse(null);
+        request.setMessageBody(stocker);
+        request.setFunctionId("release");
+        request.setUser(new RequestUser("aron.xu"));
+
+        String json = JSONObject.toJSONString(RequestReply.request(request), SerializerFeature.WriteMapNullValue,
+                SerializerFeature.WriteNullStringAsEmpty,
+                SerializerFeature.WriteNullBooleanAsFalse);
+        System.out.println("---" + json);
+        JSONObject jsonObject = JSONObject.parseObject(json);
+        messageSender.sendAndReceive("OM-REQUEST", jsonObject);
+        /*MsgBean msgBean = new MsgBean();
+        MsgBean.RequestBean requestBean = new MsgBean.RequestBean();
+        requestBean.setMessageBody(stocker);
+        requestBean.setUser(new MsgBean.RequestBean.UserBean("aron.xu"));
+        msgBean.setRequest(requestBean);*/
+        //messageSender.sendAndReceive("release-request", msgBean);
+    }
+
+    @Test
+    public void test16() {
+        UserReleaseBean userReleaseBean = new UserReleaseBean();
+        userReleaseBean.setAction("create");
+        userReleaseBean.setReleaseType("user");
+
+        String json = "{\"userId\":\"aron\",\"userName\":\"aron\",\"company\":\"fa\",\"department\":\"pdc\",\"password\":\"aron123\"," +
+                "\"expiredPeriod\":1,\"supervisorFlag\":true,\"eMailAddress\":\"aron.xu@fa-software.com\",\"phoneNumber\":\"123456789\"," +
+                "\"privilegeGroups\":[\"OM\"],\"pptAreaGroups\":[\"Fab_A\"],\"brmUserGroups\":[\"MMer\"],\"brmReleasePermissionFlag\":true," +
+                "\"brmReleaseConditionFlag\":true,\"brmDeletePermissionFlag\":true,\"brmDeleteConditionFlag\":true," +
+                "\"brmActivatePermissionFlag\":true,\"userDataSets\":{\"type\":\"string\",\"value\":\"123\",\"name\":\"test\"}}";
+        UserReleaseBean.BodyBean bodyBean = JSONObject.parseObject(json, UserReleaseBean.BodyBean.class);
+        userReleaseBean.setBody(bodyBean);
+
+        Request request = new Request();
+        request.setMessageBody(userReleaseBean);
+        request.setFunctionId("release");
+        request.setUser(new RequestUser("aron.xu"));
+        String sendJson = JSONObject.toJSONString(RequestReply.request(request), SerializerFeature.WriteMapNullValue,
+                SerializerFeature.WriteNullStringAsEmpty,
+                SerializerFeature.WriteNullBooleanAsFalse);
+        System.out.println("---" + sendJson);
+        JSONObject jsonObject = JSONObject.parseObject(sendJson);
+        messageSender.sendAndReceive("OM-REQUEST", jsonObject);
     }
 
 }

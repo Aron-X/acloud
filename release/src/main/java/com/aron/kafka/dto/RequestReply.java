@@ -1,7 +1,11 @@
 package com.aron.kafka.dto;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
+
+import java.io.Serializable;
 
 /**
  * description:
@@ -17,29 +21,20 @@ import lombok.Setter;
  * @copyright: 2019, FA Software (Chengdu) Co., Ltd. All Rights Reserved.
  */
 @Getter
-@Setter
-public class RequestReply {
-    private String data;
+@ToString
+public class RequestReply implements Serializable {
+    private static final long serialVersionUID = -5510626308023961478L;
 
-    private Object request;
+    private Request request;
+    private Reply reply;
 
-    private Object reply;
-
-    public Object getRequest() {
-        return request;
-    }
-
-    public Object getReply() {
-        return reply;
-    }
-
-    public static RequestReply request(Object request) {
+    public static RequestReply request(Request request) {
         RequestReply requestReply = new RequestReply();
         requestReply.request = request;
         return requestReply;
     }
 
-    public static RequestReply reply(Object reply) {
+    public static RequestReply reply(Reply reply) {
         RequestReply requestReply = new RequestReply();
         requestReply.reply = reply;
         return requestReply;

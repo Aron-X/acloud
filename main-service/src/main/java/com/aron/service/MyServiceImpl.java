@@ -181,10 +181,11 @@ public class MyServiceImpl implements IMyService {
         System.out.println(">>>>>" + stockerBO1.toString());
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public void myTest() {
         Optional<Stocker> stocker = stockerRepository.findById("123");
-        List<StockerItem> stockerItems = stocker.get().getStockerItems();
+        /*List<StockerItem> stockerItems = stocker.get().getStockerItems();
         StockerItem stockerItem = stockerItems.get(0);
         stockerItem.setStockerInfo("444");
 
@@ -192,7 +193,7 @@ public class MyServiceImpl implements IMyService {
         stockerRepository.save(stocker.get());
         System.out.println(stocker.get().toString());
         
-        System.out.println(1 / 0);
+        System.out.println(1 / 0);*/
     }
 
 }

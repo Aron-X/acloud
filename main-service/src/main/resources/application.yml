@@ -43,6 +43,14 @@ spring:
       config: classpath:ehcache.xml
 ---
 #spring:
+#  kafka:
+#    consumer:
+#      properties:
+#        spring:
+#          json:
+#            trusted:
+#              packages: com.aron.kafka.dto.gson
+#spring:
 #  redis:
 #    host: localhost
 #    port: 6379

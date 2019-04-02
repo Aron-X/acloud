@@ -1,6 +1,7 @@
 package com.aron.kafka;
 
-import com.alibaba.fastjson.JSONObject;
+import com.aron.kafka.dto.Reply;
+import com.aron.kafka.dto.Request;
 import com.aron.kafka.dto.RequestReply;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -27,26 +28,33 @@ public class RequestListener {
     /**
      * requestListener
      *
-     * @param request
-     * @return
+     * @param requestReply requestReply
+     * @return RequestReply
      */
     @KafkaListener(topics = "release-request", containerFactory = "kafkaListenerContainerFactory")
     @SendTo
-    public RequestReply requestListener(RequestReply request) {
-        log.info(">>>>>>>>>>>  received message : {}", request);
-        JSONObject jsonObject = JSONObject.parseObject(request.getData());
-        String name = jsonObject.getString("name");
+    public RequestReply requestListener(RequestReply requestReply) {
+        log.info(">>>>>>>>>>>  received message : {}", requestReply.getRequest());
+        //JSONObject jsonObject = JSONObject.parseObject();
+        Request request = requestReply.getRequest();
+        log.info(">>>>>>>>>>>  request : {}", request);
+        /*String name = jsonObject.getString("name");
         log.info(">>>>>>>>>>>  name : {}", name);
         //process
         jsonObject.replace("name", "processed name");
-        request.setData(jsonObject.toJSONString());
-
+        request.setData(jsonObject.toJSONString());*/
+        Reply reply = new Reply();
+        reply.setMessage("success");
         try {
-            Thread.sleep(6000);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-        return request;
+        //return RequestReply.reply(reply);
+        /*RequestReply RequestReply = new RequestReply();
+        RequestReply.ReplyBean replyBean = new RequestReply.ReplyBean();
+        replyBean.setMessage("lalallalla");
+        RequestReply.setReply(replyBean);*/
+        return RequestReply.reply(reply);
     }
 }
