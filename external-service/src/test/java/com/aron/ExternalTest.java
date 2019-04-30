@@ -51,6 +51,13 @@ public class ExternalTest {
                 "\"brmReleasePermissionFlag\":true,\"brmReleaseConditionFlag\":true,\"brmDeletePermissionFlag\":true," +
                 "\"brmDeleteConditionFlag\":true,\"brmActivatePermissionFlag\":true,\"userDataSets\":{\"type\":\"demoData\",\"value\":\"demoData\"," +
                 "\"name\":\"demoData\"}}},\"messageId\":\"78d86cac-e314-473e-aed2-69fe487e2a0a\",\"sendTime\":\"\"}";
+        Object equipmentStateJson = "{\"user\":{\"userId\":\"aron\",\"functionId\":\"RELEASE\",\"clientNode\":\"demoData\"}," +
+                "\"functionId\":\"RELEASE\",\"messageBody\":{\"action\":\"update\",\"releaseType\":\"equipmentState\"," +
+                "\"body\":{\"equipmentStateCode\":\"ARONCD\",\"equipmentStateName\":\"AronCode\",\"eqpStateDesc\":\"this is test2\"," +
+                "\"e10State\":\"ENG\",\"equipmentAvailableFlag\":true,\"conditionalAvailableFlag\":true,\"manufacturingStateChangeableFlag\":true," +
+                "\"changeFromOtherE10Flag\":true,\"changeToOtherE10Flag\":true,\"availableSubLotTypes\":null,\"convertingConditions\":null," +
+                "\"nextTransitionStates\":null,\"userDataSets\":null}},\"messageId\":\"78d86cac-e314-473e-aed2-69fe487e2a0a\"," +
+                "\"sendTime\":\"2019-04-29 13:51:00\"}";
         Object mfgJson = "{\"user\":{\"userId\":\"aron\",\"functionId\":\"RELEASE\",\"clientNode\":\"demoData\"},\"functionId\":\"RELEASE\"," +
                 "\"messageBody\":{\"action\":\"create\",\"releaseType\":\"mfgLayer\",\"body\":{\"description\":\"demoData\"," +
                 "\"userDataSet\":[{\"type\":\"demoData\",\"value\":\"demoData\",\"name\":\"demoData\"}]," +
@@ -76,8 +83,7 @@ public class ExternalTest {
                 /*Object reply = rabbitTemplate.convertSendAndReceive("MES_SYNC_EXCHANGE", "MES_SYNC", threadName + " ## hi dude, how are you " +
                         "doing ?");*/
                 ///Object message = threadName + " ## hi dude, how are you doing ?";
-                Object reply = rabbitTemplate.convertSendAndReceive("MES_SYNC_EXCHANGE", "MES_SYNC", recipeJson
-                );
+                Object reply = rabbitTemplate.convertSendAndReceive("MES_SYNC_EXCHANGE", "MES_SYNC", equipmentStateJson);
                 if (reply instanceof byte[]) {
                     reply = new String((byte[]) reply);
                 }
@@ -89,7 +95,7 @@ public class ExternalTest {
                 if (response.getCode() == Response.SUCCESS) {
                     log.info(">>>>> release success ! <<<<<");
                 } else {
-                    log.info(">>>>> release failed ! <<<<<");
+                    log.info(">>>>> release failed : {} <<<<<", response.getMessage());
                 }
             });
         }
