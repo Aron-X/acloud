@@ -1,5 +1,7 @@
 package com.aron;
 
+import com.alibaba.fastjson.JSONObject;
+import com.aron.dto.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +16,7 @@ import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * description:
@@ -81,6 +84,13 @@ public class ExternalTest {
                 //new CorrelationData(UUID.randomUUID().toString()
                 //rabbitTemplate.ack
                 log.info(threadName + " ## reply is :" + reply.toString());
+
+                Response response = JSONObject.parseObject((String) reply, Response.class);
+                if (response.getCode() == Response.SUCCESS) {
+                    log.info(">>>>> release success ! <<<<<");
+                } else {
+                    log.info(">>>>> release failed ! <<<<<");
+                }
             });
         }
         executorService.shutdown();
