@@ -13,6 +13,8 @@
         <module>common</module>
         <module>entity</module>
         <module>release</module>
+        <module>message-broker</module>
+        <module>external-service</module>
     </modules>
 
     <parent>
@@ -54,6 +56,16 @@
                 <artifactId>release</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.fa.cim</groupId>
+                <artifactId>message-broker</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fa.cim</groupId>
+                <artifactId>external-service</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -72,25 +84,26 @@
 
     <repositories>
         <repository>
-            <id>ali</id>
-            <name>Ali Repository</name>
-            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+            <id>aron</id>
+            <url>http://182.140.146.203:8881/repository/maven-public/</url>
             <snapshots>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
             </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
         </repository>
     </repositories>
     <pluginRepositories>
         <pluginRepository>
-            <id>ali</id>
-            <name>Ali Repository</name>
-            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
+            <id>aron</id>
+            <url>http://182.140.146.203:8881/repository/maven-public/</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
         </pluginRepository>
     </pluginRepositories>
 

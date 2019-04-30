@@ -54,7 +54,7 @@ public class ScheduledService {
 
     @Scheduled(cron = EXPIRE_UNUSED_CRON)
     public void clearExpireUnusedPath() {
-        log.debug(">>>> expire unused lock node <<<<");
+        log.info(">>>> expire unused lock node <<<<");
         zookeeperLockRegistry.expireUnusedOlderThan(CuratorConfiguration.ZK_PATH_EXPIRED_TIME);
     }
 

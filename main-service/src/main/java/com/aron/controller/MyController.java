@@ -116,7 +116,7 @@ public class MyController {
 
         boolean locked = true;
         try {
-            locked = lock.tryLock(500, TimeUnit.MILLISECONDS);
+            locked = lock.tryLock(5, TimeUnit.SECONDS);
             if (!locked) {
                 log.info(">>>> {} get lock failed <<<", Thread.currentThread().getName());
                 return "please tried later ...";

@@ -3,3 +3,7 @@ server:
 spring:
   jpa:
     open-in-view: true
+---
+zk:
+  suffix:
+    name: aron

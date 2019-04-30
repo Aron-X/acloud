@@ -1,7 +1,9 @@
 package com.aron;
 
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.aron.bo.BoFactory;
+import com.aron.bo.StockerBO;
+import com.aron.bo.StockerBOImpl;
 import com.aron.dao.AddressRepository;
 import com.aron.dao.StockerRepository;
 import com.aron.dao.UserRepository;
@@ -9,19 +11,9 @@ import com.aron.entity.Address;
 import com.aron.entity.Stocker;
 import com.aron.entity.StockerItem;
 import com.aron.entity.pk.AddressPk;
-import com.aron.bo.BoFactory;
-import com.aron.kafka.JsonTool;
-import com.aron.kafka.MessageSender;
-import com.aron.kafka.dto.Request;
-import com.aron.kafka.dto.RequestReply;
-import com.aron.kafka.dto.RequestUser;
-import com.aron.kafka.dto.gson.UserReleaseBean;
 import com.aron.service.IMyService;
-import com.aron.bo.StockerBO;
-import com.aron.bo.StockerBOImpl;
 import com.aron.utils.ObjectIdentifier;
 import com.aron.utils.SpringContextUtil;
-import com.fa.cim.dto.CimRequestReply;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -35,6 +27,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.Predicate;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -65,8 +58,8 @@ public class AronTests {
     @Autowired
     private BoFactory boFactory;
 
-    @Autowired
-    private MessageSender messageSender;
+    /*@Autowired
+    private MessageSender messageSender;*/
 
     @Test
     public void testSessionCache() {
@@ -252,7 +245,7 @@ public class AronTests {
         System.out.println(stocker.get().toString());*/
     }
 
-    @Test
+    /*@Test
     public void test15() {
         Request request = new Request();
         Stocker stocker = stockerRepository.findById("123").orElse(null);
@@ -266,15 +259,15 @@ public class AronTests {
         System.out.println("---" + json);
         JSONObject jsonObject = JSONObject.parseObject(json);
         messageSender.sendAndReceive("OM-REQUEST", jsonObject);
-        /*MsgBean msgBean = new MsgBean();
+        *//*MsgBean msgBean = new MsgBean();
         MsgBean.RequestBean requestBean = new MsgBean.RequestBean();
         requestBean.setMessageBody(stocker);
         requestBean.setUser(new MsgBean.RequestBean.UserBean("aron.xu"));
-        msgBean.setRequest(requestBean);*/
+        msgBean.setRequest(requestBean);*//*
         //messageSender.sendAndReceive("release-request", msgBean);
-    }
+    }*/
 
-    @Test
+    /*@Test
     public void test16() {
         UserReleaseBean userReleaseBean = new UserReleaseBean();
         userReleaseBean.setAction("create");
@@ -298,6 +291,23 @@ public class AronTests {
         System.out.println("---" + sendJson);
         JSONObject jsonObject = JSONObject.parseObject(sendJson);
         messageSender.sendAndReceive("OM-REQUEST", jsonObject);
+    }*/
+
+    @Test
+    public void test17() {
+        MyBean myBean = new MyBean();
+        myBean.setName("asd");
+        String jsonString = JSONObject.toJSONString(myBean);
+        System.out.println(jsonString);
+    }
+
+    @Data
+    public static class MyBean implements Serializable {
+
+        private static final long serialVersionUID = -3151873736216750404L;
+
+        private static String ASDSD = "12112";
+        private String name;
     }
 
 }

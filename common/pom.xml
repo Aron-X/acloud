@@ -41,12 +41,26 @@
 
     <repositories>
         <repository>
-            <id>ali</id>
-            <name>Ali Repository</name>
-            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+            <id>aron</id>
+            <url>http://182.140.146.203:8881/repository/maven-public/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>aron</id>
+            <url>http://182.140.146.203:8881/repository/maven-public/</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
-        </repository>
-    </repositories>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </pluginRepository>
+    </pluginRepositories>
 </project>

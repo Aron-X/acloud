@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.integration.zookeeper.lock.ZookeeperLockRegistry;
+import org.springframework.util.StringUtils;
 
 /**
  * description:
@@ -34,10 +35,12 @@ public class CuratorConfiguration {
 
     public static final long ZK_PATH_EXPIRED_TIME = 120000;
 
+    public static final String LOCK_ROOT = "mycim-object-lock";
+
     @Value("${spring.application.name}")
     private String serviceName;
 
-    @Setter
+    @Value("${zk.suffix.name}")
     private String suffixPath;
 
     @Setter
@@ -67,7 +70,7 @@ public class CuratorConfiguration {
         return new OmZookeeperLock(client, lockRootPath);
     }
 
-    //(initMethod = "start")
+    ///(initMethod = "start")
     @Bean
     public CuratorFramework curatorFramework() {
         log.info(">>>>> zookeeper connectString:{}, sessionTimeoutMs:{}, connectionTimeoutMs:{}, retryTimes:{}, sleepBetweenRetries:{}",
@@ -81,6 +84,6 @@ public class CuratorConfiguration {
 
     @Bean("lockRootPath")
     public String getLockRoot() {
-        return String.format("/%s-%s", serviceName, suffixPath);
+        return StringUtils.isEmpty(suffixPath) ? String.format("/%s_%s", LOCK_ROOT, "default") : String.format("/%s_%s", LOCK_ROOT, suffixPath);
     }
 }
