@@ -40,7 +40,7 @@ public class ExternalTest {
     @Test
     public void test() {
         log.info(">>> start <<<");
-        Object inbound = "{\"user\":{\"userId\":\"aron-test\",\"functionId\":\"RELEASE\",\"password\":\"demoData\",\"newPassword\":\"demoData\"," +
+        Object userJson = "{\"user\":{\"userId\":\"aron-test\",\"functionId\":\"RELEASE\",\"password\":\"demoData\",\"newPassword\":\"demoData\"," +
                 "\"clientNode\":\"demoData\"},\"functionId\":\"RELEASE\",\"messageBody\":{\"action\":\"create\",\"releaseType\":\"user\"," +
                 "\"body\":{\"userId\":\"aron-test\",\"userName\":\"aron-test\",\"company\":\"fa\",\"department\":\"pdc\"," +
                 "\"password\":\"test\",\"expiredPeriod\":1,\"supervisorFlag\":true,\"eMailAddress\":\"demoData\",\"phoneNumber\":\"demoData\"," +
@@ -59,6 +59,13 @@ public class ExternalTest {
                 "\"shipFlag\":true,\"productType\":\"test\",\"waferIdAssignmentRequiredFlag\":true,\"productionBankFlag\":true," +
                 "\"recycleBankFlag\":true,\"controlWaferBankFlag\":true,\"userDataSets\":[{\"type\":\"demoData\",\"value\":\"demoData\"," +
                 "\"name\":\"demoData\"}]}},\"messageId\":\"78d86cac-e314-473e-aed2-69fe487e2a0a\",\"sendTime\":\"2019-04-29 13:51:00\"}";
+        Object recipeJson = "{\"user\":{\"userId\":\"aron\",\"functionId\":\"RELEASE\",\"clientNode\":\"demoData\"},\"functionId\":\"RELEASE\"," +
+                "\"messageBody\":{\"action\":\"update\",\"releaseType\":\"recipe\",\"body\":{\"recipeId\":\"RCP-01\",\"recipeNameSpace\":\"ARON\"," +
+                "\"version\":\"01\",\"description\":\"thsi is test\",\"forceDownloadFlag\":true,\"recipeBodyConfirmFlag\":true," +
+                "\"conditionalDownloadFlag\":true,\"fpcCategory\":\"this is test fpc data\",\"whiteDefinitionFlag\":true," +
+                "\"fileLocation\":\"demoData\",\"equipments\":null,\"userGroups\":null,\"genericRecipe\":\"demoData\"," +
+                "\"userDataSets\":[{\"type\":\"demoData\",\"value\":\"demoData\",\"name\":\"demoData\"}]}}," +
+                "\"messageId\":\"78d86cac-e314-473e-aed2-69fe487e2a0a\",\"sendTime\":\"2019-04-29 13:51:00\"}";
         ExecutorService executorService = Executors.newFixedThreadPool(100);
         for (int i = 0; i < 1; i++) {
             executorService.execute(() -> {
@@ -66,7 +73,7 @@ public class ExternalTest {
                 /*Object reply = rabbitTemplate.convertSendAndReceive("MES_SYNC_EXCHANGE", "MES_SYNC", threadName + " ## hi dude, how are you " +
                         "doing ?");*/
                 ///Object message = threadName + " ## hi dude, how are you doing ?";
-                Object reply = rabbitTemplate.convertSendAndReceive("MES_SYNC_EXCHANGE", "MES_SYNC", bankJson
+                Object reply = rabbitTemplate.convertSendAndReceive("MES_SYNC_EXCHANGE", "MES_SYNC", recipeJson
                 );
                 if (reply instanceof byte[]) {
                     reply = new String((byte[]) reply);
