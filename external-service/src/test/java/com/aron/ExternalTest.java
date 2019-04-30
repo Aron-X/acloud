@@ -65,7 +65,7 @@ public class ExternalTest {
                 String threadName = Thread.currentThread().getName();
                 /*Object reply = rabbitTemplate.convertSendAndReceive("MES_SYNC_EXCHANGE", "MES_SYNC", threadName + " ## hi dude, how are you " +
                         "doing ?");*/
-                Object message = threadName + " ## hi dude, how are you doing ?";
+                ///Object message = threadName + " ## hi dude, how are you doing ?";
                 Object reply = rabbitTemplate.convertSendAndReceive("MES_SYNC_EXCHANGE", "MES_SYNC", bankJson
                 );
                 if (reply instanceof byte[]) {
