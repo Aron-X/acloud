@@ -139,7 +139,7 @@ public class ExternalTest {
             executorService.execute(() -> {
                 String threadName = Thread.currentThread().getName();
 
-                String reply = rabbitTemplate.call("MES_SYNC", "CIM-REPLY-TEST-001", equipmentJson);
+                String reply = rabbitTemplate.call("RELEASE-REQUEST", "RELEASE-REQUEST-TEST-001", equipmentJson);
                 //rabbitTemplate.ack
                 log.info(threadName + " ## reply is :" + reply);
 

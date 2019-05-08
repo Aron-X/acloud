@@ -105,7 +105,7 @@ public class RabbitConfig {
      */
     @Bean
     public Binding binding() {
-        return BindingBuilder.bind(requestQueue()).to(requestExchange()).with(rabbitProperties.getSyncRoutingKey());
+        return BindingBuilder.bind(requestQueue()).to(requestExchange()).with(requestQueue().getName());
     }
 
     /**
@@ -150,7 +150,7 @@ public class RabbitConfig {
 
     @Bean
     public Queue otherQueue() {
-        return new Queue("OTHERS", true, false, false);
+        return new Queue("DEFAULT-ASYNC", true, false, false);
     }
 
     @Bean
