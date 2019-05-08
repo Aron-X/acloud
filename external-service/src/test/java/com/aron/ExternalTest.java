@@ -2,6 +2,7 @@ package com.aron;
 
 import com.alibaba.fastjson.JSONObject;
 import com.aron.dto.Response;
+import com.aron.rabbitmq.CimRabbitTemplate;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,8 +41,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class ExternalTest {
 
     @Autowired
-    @Qualifier("syncRabbitTemplate")
-    private RabbitTemplate rabbitTemplate;
+    private CimRabbitTemplate rabbitTemplate;
 
     @Test
     public void test() {
@@ -138,26 +138,12 @@ public class ExternalTest {
         for (int i = 0; i < 1; i++) {
             executorService.execute(() -> {
                 String threadName = Thread.currentThread().getName();
-                /*Object reply = rabbitTemplate.convertSendAndReceive("MES_SYNC_EXCHANGE", "MES_SYNC", threadName + " ## hi dude, how are you " +
-                        "doing ?");*/
-                ///Object message = threadName + " ## hi dude, how are you doing ?";
-                Message message = MessageBuilder.withBody((equipmentJson).getBytes())
-                        .build();
-                message.getMessageProperties().setCorrelationId(UUID.randomUUID().toString());
-                message.getMessageProperties().setContentType(MessageProperties.CONTENT_TYPE_JSON);
-                //set reply routing-key and direct-exchange-name
-                message.getMessageProperties().getHeaders().put("direct-exchange-name", "MES_SYNC_EXCHANGE");
-                message.getMessageProperties().getHeaders().put("routing-key", "CIM-REPLY-TEST-001");
 
-                Object reply = rabbitTemplate.convertSendAndReceive("MES_SYNC_EXCHANGE", "MES_SYNC", message);
-                if (reply instanceof byte[]) {
-                    reply = new String((byte[]) reply);
-                }
-                //new CorrelationData(UUID.randomUUID().toString()
+                String reply = rabbitTemplate.call("MES_SYNC", "CIM-REPLY-TEST-001", equipmentJson);
                 //rabbitTemplate.ack
-                log.info(threadName + " ## reply is :" + reply.toString());
+                log.info(threadName + " ## reply is :" + reply);
 
-                Response response = JSONObject.parseObject((String) reply, Response.class);
+                Response response = JSONObject.parseObject(reply, Response.class);
                 if (response.getCode() == Response.SUCCESS) {
                     log.info(">>>>> release success ! <<<<<");
                 } else {
@@ -179,6 +165,6 @@ public class ExternalTest {
 
     @Test
     public void test1() {
-        rabbitTemplate.convertAndSend("MES_ASYNC_EXCHANGE", "MES_ASYNC", "this is another test");
+        rabbitTemplate.send("MES_ASYNC", "this is another test");
     }
 }

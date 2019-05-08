@@ -1,6 +1,7 @@
 package com.aron;
 
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.aron.bo.BoFactory;
 import com.aron.bo.StockerBO;
 import com.aron.bo.StockerBOImpl;
@@ -11,6 +12,11 @@ import com.aron.entity.Address;
 import com.aron.entity.Stocker;
 import com.aron.entity.StockerItem;
 import com.aron.entity.pk.AddressPk;
+import com.aron.kafka.MessageSender;
+import com.aron.kafka.dto.Request;
+import com.aron.kafka.dto.RequestReply;
+import com.aron.kafka.dto.RequestUser;
+import com.aron.kafka.dto.gson.UserReleaseBean;
 import com.aron.service.IMyService;
 import com.aron.utils.ObjectIdentifier;
 import com.aron.utils.SpringContextUtil;
@@ -58,8 +64,8 @@ public class AronTests {
     @Autowired
     private BoFactory boFactory;
 
-    /*@Autowired
-    private MessageSender messageSender;*/
+    @Autowired
+    private MessageSender messageSender;
 
     @Test
     public void testSessionCache() {
@@ -267,7 +273,7 @@ public class AronTests {
         //messageSender.sendAndReceive("release-request", msgBean);
     }*/
 
-    /*@Test
+    @Test
     public void test16() {
         UserReleaseBean userReleaseBean = new UserReleaseBean();
         userReleaseBean.setAction("create");
@@ -291,7 +297,7 @@ public class AronTests {
         System.out.println("---" + sendJson);
         JSONObject jsonObject = JSONObject.parseObject(sendJson);
         messageSender.sendAndReceive("OM-REQUEST", jsonObject);
-    }*/
+    }
 
     @Test
     public void test17() {

@@ -69,7 +69,6 @@ public class RabbitConfig {
      * @return
      */
     @Bean
-    @Qualifier("syncRabbitTemplate")
     public RabbitTemplate fixedReplyQRabbitTemplate() {
         RabbitTemplate template = new RabbitTemplate(rabbitConnectionFactory());
         template.setExchange(requestExchange().getName());
