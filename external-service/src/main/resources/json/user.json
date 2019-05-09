@@ -1,0 +1,38 @@
+{
+  "user": {
+    "userId": "aron",
+    "functionId": "RELEASE",
+    "clientNode": "aron"
+  },
+  "functionId": "RELEASE",
+  "messageBody": {
+    "action": "create",
+    "releaseType": "user",
+    "body": {
+      "userId": "aron",
+      "userName": "aron",
+      "company": "fa",
+      "department": "pdc",
+      "password": "aron",
+      "expiredPeriod": 1,
+      "supervisorFlag": true,
+      "eMailAddress": "demoData",
+      "phoneNumber": "demoData",
+      "privilegeGroups": ["demoData"],
+      "pptAreaGroups": ["demoData"],
+      "brmUserGroups": ["demoData"],
+      "brmReleasePermissionFlag": true,
+      "brmReleaseConditionFlag": true,
+      "brmDeletePermissionFlag": true,
+      "brmDeleteConditionFlag": true,
+      "brmActivatePermissionFlag": true,
+      "userDataSets": {
+        "type": "demoData",
+        "value": "demoData",
+        "name": "demoData"
+      }
+    }
+  },
+  "messageId": "78d86cac-e314-473e-aed2-69fe487e2a0a",
+  "sendTime": ""
+}

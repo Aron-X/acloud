@@ -1,0 +1,36 @@
+{
+  "user": {
+    "userId": "aron",
+    "functionId": "RELEASE",
+    "clientNode": "aron"
+  },
+  "functionId": "RELEASE",
+  "messageBody": {
+    "action": "update",
+    "releaseType": "dataCollectionDef",
+    "body": {
+      "dcDefinitionId": "DC_ARON_CJ.00",
+      "description": "this is test",
+      "dcType": "Process",
+      "fpcCategory": null,
+      "whiteDefinitionFlag": false,
+      "dcItems": [{
+        "itemType": "Raw",
+        "measurementType": "demoData",
+        "dcItemName": "DC Item1",
+        "waferPosition": "5",
+        "sitePosition": null,
+        "dataType": "String",
+        "unit": null,
+        "calculationType": "Raw",
+        "calculationTypeFlag": false,
+        "calculationExpression": null,
+        "dcMode": "Manual",
+        "historyRequiredFlag": false
+      }],
+      "userDataSets": null
+    }
+  },
+  "messageId": "78d86cac-e314-473e-aed2-69fe487e2a0a",
+  "sendTime": "2019-04-29 13:51:00"
+}

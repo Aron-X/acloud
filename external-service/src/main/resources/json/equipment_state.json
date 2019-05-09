@@ -1,0 +1,29 @@
+{
+  "user": {
+    "userId": "aron",
+    "functionId": "RELEASE",
+    "clientNode": "demoData"
+  },
+  "functionId": "RELEASE",
+  "messageBody": {
+    "action": "update",
+    "releaseType": "equipmentState",
+    "body": {
+      "equipmentStateCode": "ARONCD",
+      "equipmentStateName": "AronCode",
+      "eqpStateDesc": "this is test3",
+      "e10State": "ENG",
+      "equipmentAvailableFlag": true,
+      "conditionalAvailableFlag": true,
+      "manufacturingStateChangeableFlag": true,
+      "changeFromOtherE10Flag": true,
+      "changeToOtherE10Flag": true,
+      "availableSubLotTypes": null,
+      "convertingConditions": null,
+      "nextTransitionStates": null,
+      "userDataSets": null
+    }
+  },
+  "messageId": "78d86cac-e314-473e-aed2-69fe487e2a0a",
+  "sendTime": "2019-04-29 13:51:00"
+}

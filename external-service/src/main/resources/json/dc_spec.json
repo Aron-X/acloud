@@ -1,0 +1,45 @@
+{
+  "user": {
+    "userId": "aron",
+    "functionId": "RELEASE",
+    "clientNode": "aron"
+  },
+  "functionId": "RELEASE",
+  "messageBody": {
+    "action": "update",
+    "releaseType": "dataCollectionSpec",
+    "body": {
+      "dcSpecId": "DS_ARON.00",
+      "description": "this is test",
+      "fpcCategory": null,
+      "whiteDefinitionFlag": false,
+      "dcDefinitions": ["DC_ARON_CJ.00"],
+      "dcSpecItems": [{
+        "dcItemName": "ProcessTime1",
+        "screenUpperLimitCheckRequiredFlag": false,
+        "screenUpperLimit": 1.0,
+        "screenUpperLimitActionIds": null,
+        "screenLowerLimitCheckRequiredFlag": false,
+        "screenLowerLimit": 1.0,
+        "screenLowerLimitActionIds": null,
+        "specUpperLimitCheckRequiredFlag": false,
+        "specUpperLimit": 1.0,
+        "specUpperLimitActionIds": null,
+        "specLowerLimitActionIds": null,
+        "specLowerLimitCheckRequiredFlag": false,
+        "specLowerLimit": 1.0,
+        "controlUpperLimitCheckRequiredFlag": false,
+        "controlUpperLimit": 1.0,
+        "controlUpperLimitActionIds": null,
+        "controlLowerLimitActionIds": null,
+        "controlLowerLimitCheckRequiredFlag": false,
+        "controlLowerLimit": 1.0,
+        "targetValue": 1.0,
+        "tag": "demoData"
+      }],
+      "userDataSets": null
+    }
+  },
+  "messageId": "78d86cac-e314-473e-aed2-69fe487e2a0a",
+  "sendTime": "2019-05-05 13:51:00"
+}

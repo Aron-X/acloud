@@ -1,0 +1,60 @@
+{
+  "user": {
+    "userId": "aron",
+    "functionId": "RELEASE",
+    "clientNode": "aron"
+  },
+  "functionId": "RELEASE",
+  "messageBody": {
+    "action": "update",
+    "releaseType": "logicalRecipe",
+    "body": {
+      "logicalRecipeId": "CMP_ARON.01",
+      "version": "01",
+      "description": "this is test2",
+      "multipleChamberSupportFlag": false,
+      "recipeType": "process",
+      "fpcCategory": null,
+      "whiteDefinitionFlag": false,
+      "testType": null,
+      "defaultRecipeSettings": [{
+        "recipe": "RCP-01.01",
+        "processResourceStates": [{
+          "processResourceName": "CH-A",
+          "state": true
+        }],
+        "recipeParameters": [{
+          "name": "Param1",
+          "unit": "c",
+          "dataType": "Integer",
+          "defaultValue": "60",
+          "lowerLimit": "20",
+          "upperLimit": "200",
+          "useCurrentValueFlag": false,
+          "tag": null
+        }, {
+          "name": "Param2",
+          "unit": "c",
+          "dataType": "Integer",
+          "defaultValue": "30",
+          "lowerLimit": "10",
+          "upperLimit": "100",
+          "useCurrentValueFlag": false,
+          "tag": null
+        }],
+        "dcDefinition": "DC_ARON_CJ.00",
+        "dcSpec": null,
+        "binDefinition": null,
+        "sampleSpec": null,
+        "fixtureGroups": null
+      }],
+      "equipmentSpecificRecipeSettings": null,
+      "monitorProduct": null,
+      "monitorHoldFlag": false,
+      "subLotType": null,
+      "userDataSets": null
+    }
+  },
+  "messageId": "78d86cac-e314-473e-aed2-69fe487e2a0a",
+  "sendTime": "2019-04-29 13:51:00"
+}
