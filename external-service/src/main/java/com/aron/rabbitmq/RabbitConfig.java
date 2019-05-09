@@ -75,7 +75,7 @@ public class RabbitConfig {
         template.setRoutingKey(rabbitProperties.getSyncRoutingKey());
         template.setReplyAddress(requestExchange().getName() + "/" + replyQueue().getName());
         //template.setReceiveTimeout(60000);
-        template.setReplyTimeout(100000);
+        template.setReplyTimeout(60000);
         return template;
     }
 
@@ -96,7 +96,7 @@ public class RabbitConfig {
         container.setConcurrentConsumers(200);
         container.setPrefetchCount(5);
         //set ack
-        container.setAcknowledgeMode(AcknowledgeMode.MANUAL);
+        ///container.setAcknowledgeMode(AcknowledgeMode.MANUAL);
         return container;
     }
 

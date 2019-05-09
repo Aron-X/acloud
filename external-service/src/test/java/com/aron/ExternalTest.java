@@ -73,14 +73,13 @@ public class ExternalTest {
     @Test
     public void test() {
         log.info(">>> start <<<");
-        String jsonValue = jsonReader(equipment);
+        String jsonValue = jsonReader(user);
 
         ExecutorService executorService = Executors.newFixedThreadPool(100);
         for (int i = 0; i < 1; i++) {
             executorService.execute(() -> {
                 String threadName = Thread.currentThread().getName();
                 String reply = rabbitTemplate.call("DEPLOY-REQUEST", "DEPLOY-REPLY-TEST-001", jsonValue);
-                //rabbitTemplate.ack
                 log.info(threadName + " ## reply is :" + reply);
                 Response response = JSONObject.parseObject(reply, Response.class);
                 if (response.getCode() == Response.SUCCESS) {

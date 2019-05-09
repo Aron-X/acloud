@@ -1,6 +1,7 @@
 package com.aron.rabbitmq;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.core.Address;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageBuilder;
 import org.springframework.amqp.core.MessageProperties;
@@ -36,13 +37,22 @@ public class CimRabbitTemplate {
     }
 
     public String call(String callRoutingKey, String replyRoutingKey, String msg) {
-        Message message = MessageBuilder.withBody((msg).getBytes()).build();
-        message.getMessageProperties().setCorrelationId(UUID.randomUUID().toString());
-        message.getMessageProperties().setContentType(MessageProperties.CONTENT_TYPE_JSON);
-        //set reply routing-key and direct-exchange-name
-        message.getMessageProperties().getHeaders().put("direct-exchange-name", "MES_SYNC_EXCHANGE");
-        message.getMessageProperties().getHeaders().put("routing-key", replyRoutingKey);
-        Object receive = rabbitTemplate.convertSendAndReceive("MES_SYNC_EXCHANGE", callRoutingKey, message);
+        Message message = MessageBuilder.withBody((msg).getBytes())
+                .setReplyToAddress(new Address("MES_SYNC_EXCHANGE", replyRoutingKey))
+                .setContentType(MessageProperties.CONTENT_TYPE_JSON)
+                .setCorrelationId(UUID.randomUUID().toString())
+                .build();
+        rabbitTemplate.setConfirmCallback((correlationData, ack, cause) -> {
+            if (ack) {
+                log.info("## ack confirm -> call send successed ##");
+                return;
+            }
+            log.info("## ack confirm -> call send failed : {} ,{} ##", cause, correlationData.toString());
+        });
+        rabbitTemplate.setReturnCallback((message1, replyCode, replyText, exchange, routingKey) -> log.info("## return-message:" + new String(message1.getBody()) + ",replyCode:" + replyCode
+                + ",replyText:" + replyText + ",exchange:" + exchange + ",routingKey:" + routingKey));
+        Object receive = rabbitTemplate.convertSendAndReceive("MES_SYNC_EXCHANGE", callRoutingKey, message,
+                new CorrelationData(UUID.randomUUID().toString()));
         if (receive instanceof byte[]) {
             receive = new String((byte[]) receive);
         }
