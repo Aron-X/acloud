@@ -134,12 +134,92 @@ public class ExternalTest {
                 "\"tag\":\"demoData\"}],\"userDataSets\":null}},\"messageId\":\"78d86cac-e314-473e-aed2-69fe487e2a0a\",\"sendTime\":\"2019-05-05 " +
                 "13:51:00\"}";
 
+        String productSpeJson = "{\n" +
+                "    \"user\":{\n" +
+                "        \"userId\":\"LiFeng\",\n" +
+                "        \"functionId\":\"RELEASE\",\n" +
+                "        \"clientNode\":\"LiFeng\"\n" +
+                "    },\n" +
+                "    \"functionId\":\"RELEASE\",\n" +
+                "    \"messageBody\":{\n" +
+                "        \"action\":\"create\",\n" +
+                "        \"releaseType\":\"productSpecification\",\n" +
+                "        \"body\":{\n" +
+                "            \"productId\":\"demoData\",\n" +
+                "            \"ec\":\"demoData\",\n" +
+                "            \"description\":\"demoData\",\n" +
+                "            \"state\":\"demoData\",\n" +
+                "            \"fpcAvailableFlag\":false,\n" +
+                "            \"serialManagementFlag\":false,\n" +
+                "            \"productGroup\":{\n" +
+                "                \"value\":\"demoData\",\n" +
+                "                \"referenceKey\":\"demoData\"\n" +
+                "            },\n" +
+                "            \"productType\":\"demoData\",\n" +
+                "            \"productCategory\":{\n" +
+                "                \"value\":\"demoData\",\n" +
+                "                \"referenceKey\":\"demoData\"\n" +
+                "            },\n" +
+                "            \"productOwner\":{\n" +
+                "                \"value\":\"demoData\",\n" +
+                "                \"referenceKey\":\"demoData\"\n" +
+                "            },\n" +
+                "            \"sourceProducts\":[\n" +
+                "                {\n" +
+                "                    \"value\":\"demoData\",\n" +
+                "                    \"referenceKey\":\"demoData\"\n" +
+                "                }\n" +
+                "            ],\n" +
+                "            \"mainProcessDefinition\":{\n" +
+                "                \"value\":\"demoData\",\n" +
+                "                \"referenceKey\":\"demoData\"\n" +
+                "            },\n" +
+                "            \"mainProcessDefinitionId\":\"demoData\",\n" +
+                "            \"mainProcessDefinitionVersion\":\"demoData\",\n" +
+                "            \"mainProcessDefinitions\":[\n" +
+                "                {\n" +
+                "                    \"serialVersionUID\":1,\n" +
+                "                    \"orderType\":\"demoData\",\n" +
+                "                    \"mfgLayer\":\"demoData\",\n" +
+                "                    \"mainProcessDefinition\":\"demoData\",\n" +
+                "                    \"mainProcessDefinitionId\":\"demoData\",\n" +
+                "                    \"mainProcessDefinitionVersion\":\"demoData\",\n" +
+                "                    \"bom\":\"demoData\"\n" +
+                "                }\n" +
+                "            ],\n" +
+                "            \"reticleSet\":{\n" +
+                "                \"value\":\"demoData\",\n" +
+                "                \"referenceKey\":\"demoData\"\n" +
+                "            },\n" +
+                "            \"lotGenerationType\":\"demoData\",\n" +
+                "            \"releaseBatchSize\":1,\n" +
+                "            \"plannedCycleTime\":1,\n" +
+                "            \"plannedYield\":1,\n" +
+                "            \"safetyStockLevel\":1,\n" +
+                "            \"finishGoodFlag\":true,\n" +
+                "            \"mfgLayer\":{\n" +
+                "                \"value\":\"demoData\",\n" +
+                "                \"referenceKey\":\"demoData\"\n" +
+                "            },\n" +
+                "            \"markingCharacter\":\"demoData\",\n" +
+                "            \"schedulerUserGroup\":{\n" +
+                "                \"value\":\"demoData\",\n" +
+                "                \"referenceKey\":\"demoData\"\n" +
+                "            },\n" +
+                "            \"userDataSets\":[\n" +
+                "\n" +
+                "            ]\n" +
+                "        }\n" +
+                "    }\n" +
+                "}";
+
+
         ExecutorService executorService = Executors.newFixedThreadPool(100);
         for (int i = 0; i < 1; i++) {
             executorService.execute(() -> {
                 String threadName = Thread.currentThread().getName();
 
-                String reply = rabbitTemplate.call("DEPLOY-REQUEST", "DEPLOY-REPLY-TEST-001", equipmentJson);
+                String reply = rabbitTemplate.call("DEPLOY-REQUEST", "DEPLOY-REPLY-TEST-001", productSpeJson);
                 //rabbitTemplate.ack
                 log.info(threadName + " ## reply is :" + reply);
 
