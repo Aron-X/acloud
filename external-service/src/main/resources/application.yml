@@ -3,10 +3,10 @@ server:
 #
 spring:
   datasource:
-    url: jdbc:oracle:thin:@localhost:1521:orcl
-    #url: jdbc:oracle:thin:@//10.211.55.6:1521/orclpdb
-    username: C##Wind
-    password: 123456
+    #url: jdbc:oracle:thin:@localhost:1521:orcl
+    url: jdbc:oracle:thin:@//10.211.55.6:1521/orclpdb
+    username: aron
+    password: aron
     driver-class-name: oracle.jdbc.driver.OracleDriver
     max-idle: 10
     max-wait: 10000
@@ -23,10 +23,10 @@ spring:
   profiles:
     active: dev
   datasource:
-    url: jdbc:oracle:thin:@localhost:1521:orcl
-    #url: jdbc:oracle:thin:@//10.211.55.6:1521/orclpdb
-    username: C##Wind
-    password: 123456
+    #url: jdbc:oracle:thin:@localhost:1521:orcl
+    url: jdbc:oracle:thin:@//10.211.55.6:1521/orclpdb
+    username: aron
+    password: aron
     driver-class-name: oracle.jdbc.driver.OracleDriver
   jpa:
     #    hibernate:
