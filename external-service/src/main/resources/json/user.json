@@ -6,7 +6,7 @@
   },
   "functionId": "RELEASE",
   "messageBody": {
-    "action": "create",
+    "action": "update",
     "releaseType": "user",
     "body": {
       "userId": "aron",

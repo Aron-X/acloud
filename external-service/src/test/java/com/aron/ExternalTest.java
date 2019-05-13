@@ -70,45 +70,16 @@ public class ExternalTest {
     @Value("classpath:json/user.json")
     private Resource user;
 
-    @Value("classpath:json/product_spec.json")
-    private Resource productSpeJson;
-
-    @Value("classpath:json/product_group.json")
-    private Resource productGroup;
-
-    @Value("classpath:json/user_group.json")
-    private Resource userGroup;
-
-    @Value("classpath:json/privilege_group.json")
-    private Resource privilegeGroup;
-
-    @Value("classpath:json/reticle_set.json")
-    private Resource reticleSet;
-
-    @Value("classpath:json/reticle.json")
-    private Resource reticle;
-
-    @Value("classpath:json/reticle_pod.json")
-    private Resource reticlePod;
-
-    @Value("classpath:json/cassette.json")
-    private Resource cassette;
-
-    @Value("classpath:json/stocker.json")
-    private Resource stocker;
-
-
     @Test
     public void test() {
         log.info(">>> start <<<");
-        String jsonValue = jsonReader(stocker);
+        String jsonValue = jsonReader(user);
+
         ExecutorService executorService = Executors.newFixedThreadPool(100);
         for (int i = 0; i < 1; i++) {
             executorService.execute(() -> {
                 String threadName = Thread.currentThread().getName();
-
                 String reply = rabbitTemplate.call("DEPLOY-REQUEST", "DEPLOY-REPLY-TEST-001", jsonValue);
-                //rabbitTemplate.ack
                 log.info(threadName + " ## reply is :" + reply);
                 Response response = JSONObject.parseObject(reply, Response.class);
                 if (response.getCode() == Response.SUCCESS) {
