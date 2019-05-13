@@ -1,0 +1,24 @@
+{
+  "user": {
+    "userId": "aron",
+    "functionId": "RELEASE",
+    "clientNode": "demoData"
+  },
+  "functionId": "RELEASE",
+  "messageBody": {
+    "action": "create",
+    "releaseType": "mfgLayer",
+    "body": {
+      "description": "demoData",
+      "userDataSet": [{
+        "type": "demoData",
+        "value": "demoData",
+        "name": "demoData"
+      }],
+      "mfgLayerId": "Mfg Layer",
+      "opeCat": "demoData"
+    }
+  },
+  "messageId": "78d86cac-e314-473e-aed2-69fe487e2a0a",
+  "sendTime": "2019-04-29 13:51:00"
+}

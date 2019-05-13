@@ -1,0 +1,32 @@
+{
+  "user": {
+    "userId": "lifeng",
+    "functionId": "RELEASE",
+    "clientNode": "lifeng"
+  },
+  "functionId": "RELEASE",
+  "messageBody": {
+    "action": "update",
+    "releaseType": "productGroup",
+    "body": {
+      "productGroupId": "demoData",
+      "description": "hello",
+      "technology": "12REF_ST",
+      "productGroupOwner": "ADMIN",
+      "chipSize": {
+        "x": 1.0,
+        "y": 1.0
+      },
+      "plannedCycleTime": 1,
+      "plannedYield": 1,
+      "grossDieCount": 200,
+      "userGroups": [
+        "demoData"
+      ],
+      "userDataSets": [
+      ]
+    }
+  },
+  "messageId": "78d86cac-e314-473e-aed2-69fe487e2a0a",
+  "sendTime": "2019-05-09 13:51:00"
+}

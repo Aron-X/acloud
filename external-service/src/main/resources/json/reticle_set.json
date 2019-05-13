@@ -1,0 +1,39 @@
+{
+  "user": {
+    "userId": "lifeng",
+    "functionId": "RELEASE",
+    "clientNode": "lifeng"
+  },
+  "functionId": "RELEASE",
+  "messageBody": {
+    "action": "update",
+    "releaseType": "reticleSet",
+    "body": {
+      "reticleSetId": "demoData",
+      "description": "hello demoData",
+      "defaultReticleGroups": [
+        {
+          "photoLayer": "demoData",
+          "overrideFlag": false,
+          "reticleGroups": [
+          ]
+        }
+      ],
+      "specificReticleGroups": [
+        {
+          "photoLayer": "demoData",
+          "product": "PRODUCT0.01",
+          "equipment": "EQP_ETCHOA01",
+          "reticleGroups": [
+            "RTCL_Grp01",
+            "RTCL_Grp02"
+          ]
+        }
+      ],
+      "userDataSets": [
+      ]
+    }
+  },
+  "messageId": "78d86cac-e314-473e-aed2-69fe487e2a0a",
+  "sendTime": "2019-05-11 13:51:00"
+}

@@ -1,0 +1,34 @@
+{
+  "user": {
+    "userId": "aron",
+    "functionId": "RELEASE",
+    "clientNode": "demoData"
+  },
+  "functionId": "RELEASE",
+  "messageBody": {
+    "action": "update",
+    "releaseType": "recipe",
+    "body": {
+      "recipeId": "RCP-01.01",
+      "recipeNameSpace": "ARON",
+      "version": "01",
+      "description": "thsi is test",
+      "forceDownloadFlag": true,
+      "recipeBodyConfirmFlag": true,
+      "conditionalDownloadFlag": true,
+      "fpcCategory": "this is test fpc data",
+      "whiteDefinitionFlag": true,
+      "fileLocation": "demoData",
+      "equipments": null,
+      "userGroups": null,
+      "genericRecipe": "demoData",
+      "userDataSets": [{
+        "type": "demoData",
+        "value": "demoData",
+        "name": "demoData"
+      }]
+    }
+  },
+  "messageId": "78d86cac-e314-473e-aed2-69fe487e2a0a",
+  "sendTime": "2019-04-29 13:51:00"
+}

@@ -1,0 +1,55 @@
+{
+  "user":{
+    "userId":"lifeng",
+    "functionId":"RELEASE",
+    "clientNode":"lifeng"
+  },
+  "functionId":"RELEASE",
+  "messageBody":{
+    "action":"update",
+    "releaseType":"productSpecification",
+    "body":{
+      "productId":"DEV-12REF",
+      "ec":"demoData",
+      "description":"hello demo",
+      "state":"demoData",
+      "fpcAvailableFlag":false,
+      "serialManagementFlag":false,
+      "productGroup":"DEV-12REFAA",
+      "productType":"demoData",
+      "productCategory":"demoData",
+      "productOwner":"ADMIN",
+      "sourceProducts":[
+        "PRODUCT0.01"
+      ],
+      "mainProcessDefinition":"VC3LYR0.01",
+      "mainProcessDefinitionId":"demoData",
+      "mainProcessDefinitionVersion":"demoData",
+      "mainProcessDefinitions":[
+        {
+          "serialVersionUID":1,
+          "orderType":"demoData",
+          "mfgLayer":"demoData",
+          "mainProcessDefinition":"VC3LYR0.01",
+          "mainProcessDefinitionId":"demoData",
+          "mainProcessDefinitionVersion":"demoData",
+          "bom":"demoData"
+        }
+      ],
+      "reticleSet":"RSET01",
+      "lotGenerationType":"demoData",
+      "releaseBatchSize":1,
+      "plannedCycleTime":1,
+      "plannedYield":1,
+      "safetyStockLevel":1,
+      "finishGoodFlag":false,
+      "mfgLayer":"demoData",
+      "markingCharacter":"demoData",
+      "schedulerUserGroup":"demoData",
+      "userDataSets":[
+      ]
+    }
+  },
+  "messageId": "78d86cac-e314-473e-aed2-69fe487e2a0a",
+  "sendTime": "2019-05-09 13:51:00"
+}
