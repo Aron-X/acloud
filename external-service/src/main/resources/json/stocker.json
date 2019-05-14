@@ -1,0 +1,39 @@
+{
+  "user": {
+    "userId": "lifeng",
+    "functionId": "RELEASE",
+    "clientNode": "demoData"
+  },
+  "functionId": "RELEASE",
+  "messageBody": {
+    "action": "update",
+    "releaseType": "stocker",
+    "body": {
+      "stockerId": "RETCLSTK01",
+      "description": "Hello Transport Equipment",
+      "instanceName": "demoData",
+      "stockerCategoryId": "demoData",
+      "cellControllerNode": "demoData",
+      "maxReticleCapacity": 1,
+      "underTrackStorageFlag": false,
+      "maxUnderTrackStorageCapacity": 1,
+      "stockerOwner": "ADMIN",
+      "supplierName": "wenxue-test",
+      "modelNumber": "wenxue-test",
+      "serialNumber": "wenxue-test",
+      "initialEquipmentStateCode": "ENG",
+      "rawEquipmentStateSetId": "QWER",
+      "resources": [
+        {
+          "resourceId": "P1",
+          "type": "Surpport Auto3",
+          "description": "usable"
+        }
+      ],
+      "userDataSets": [
+      ]
+    }
+  },
+  "messageId": "78d86cac-e314-473e-aed2-69fe487e2a0a",
+  "sendTime": "2019-04-29 13:51:00"
+}

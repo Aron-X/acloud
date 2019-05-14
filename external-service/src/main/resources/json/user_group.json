@@ -1,0 +1,25 @@
+{
+  "user": {
+    "userId": "lifeng",
+    "functionId": "RELEASE",
+    "clientNode": "lifeng"
+  },
+  "functionId": "RELEASE",
+  "messageBody": {
+    "action": "update",
+    "releaseType": "userGroup",
+    "body": {
+      "userGroupId": "demoData",
+      "companyFlag": false,
+      "companies": [
+        "demoData"
+      ],
+      "description": "hello demoData",
+      "userGroupType": "demoData",
+      "userDataSets": [
+      ]
+    }
+  },
+  "messageId": "78d86cac-e314-473e-aed2-69fe487e2a0a",
+  "sendTime": "2019-05-09 13:51:00"
+}

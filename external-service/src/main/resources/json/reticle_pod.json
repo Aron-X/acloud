@@ -1,0 +1,24 @@
+{
+  "user": {
+    "userId": "lifeng",
+    "functionId": "RELEASE",
+    "clientNode": "lifeng"
+  },
+  "functionId": "RELEASE",
+  "messageBody": {
+    "action": "update",
+    "releaseType": "reticlePod",
+    "body": {
+      "reticlePodId": "RPOD01",
+      "description": "hello demoData",
+      "instanceName": "demoData",
+      "reticlePodCategory": "PODCAT01",
+      "intervalBetweenPM": 1,
+      "slotPositionCount": 1,
+      "userDataSets": [
+      ]
+    }
+  },
+  "messageId": "78d86cac-e314-473e-aed2-69fe487e2a0a",
+  "sendTime": "2019-05-13 13:51:00"
+}
