@@ -1,0 +1,28 @@
+{
+  "user": {
+    "userId": "lifeng",
+    "functionId": "RELEASE",
+    "clientNode": "lifeng"
+  },
+  "functionId": "RELEASE",
+  "messageBody": {
+    "action": "update",
+    "releaseType": "privilegeGroup",
+    "body": {
+      "privilegeGroupId": "demoData",
+      "subSystemName": "demoData",
+      "privilegeCategory": "demoData",
+      "description": "hello demoData",
+      "privilegeIds": [
+        {
+          "privilegeID": "demoData",
+          "permission": "demoData"
+        }
+      ],
+      "userDataSets": [
+      ]
+    }
+  },
+  "messageId": "78d86cac-e314-473e-aed2-69fe487e2a0a",
+  "sendTime": "2019-05-09 13:51:00"
+}

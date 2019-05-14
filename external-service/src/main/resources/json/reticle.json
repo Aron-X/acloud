@@ -1,0 +1,31 @@
+{
+  "user": {
+    "userId": "lifeng",
+    "functionId": "RELEASE",
+    "clientNode": "lifeng"
+  },
+  "functionId": "RELEASE",
+  "messageBody": {
+    "action": "update",
+    "releaseType": "reticle",
+    "body": {
+      "reticleId": "Reticle_A01",
+      "description": "hello demoData OK",
+      "instanceName": "demoData",
+      "usageCheckRequiredFlag": false,
+      "maximumUsageCount": 1,
+      "maximumUsageDuration": 1,
+      "partNumber": "demoData",
+      "serialNumber": "demoData",
+      "supplierName": "demoData",
+      "reticleGroup": "RTCL_Grp01",
+      "intervalBetweenPM": 1,
+      "fpcCategory": "demoData",
+      "whiteDefinitionFlag": false,
+      "userDataSets": [
+      ]
+    }
+  },
+  "messageId": "78d86cac-e314-473e-aed2-69fe487e2a0a",
+  "sendTime": "2019-05-11 13:51:00"
+}
