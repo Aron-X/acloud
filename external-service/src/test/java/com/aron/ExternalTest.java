@@ -70,10 +70,13 @@ public class ExternalTest {
     @Value("classpath:json/user.json")
     private Resource user;
 
+    @Value("classpath:json/module_pd.json")
+    private Resource modulePd;
+
     @Test
     public void test() {
         log.info(">>> start <<<");
-        String jsonValue = jsonReader(user);
+        String jsonValue = jsonReader(modulePd);
 
         ExecutorService executorService = Executors.newFixedThreadPool(100);
         for (int i = 0; i < 1; i++) {

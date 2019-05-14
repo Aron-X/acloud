@@ -1,0 +1,45 @@
+{
+  "user": {
+    "userId": "aron",
+    "functionId": "TxDeployObject",
+    "password": null,
+    "newPassword": null,
+    "clientNode": null
+  },
+  "messageId": "e9760e39-1b96-4a56-b632-5a9ec7be6f51",
+  "sendTime": "2019-05-10 06.48.20.262",
+  "functionId": "RELEASE",
+  "messageBody": {
+    "action": "create",
+    "releaseType": "moduleProcessDefinition",
+    "body": {
+      "moduleProcessDefinitionId": "MD_ARONPD.01",
+      "version": "01",
+      "description": "this is module pd test",
+      "moduleProcessOperations": [{
+        "operationNumber": "100",
+        "processDefinitionId": "ARONPD.01",
+        "version": "01",
+        "processDefinition": "ARONPD.01",
+        "processOperationNumber": "100",
+        "mandatoryOperationRequiredFlag": false,
+        "defaultMeasDCSpec": null,
+        "defaultTestSpec": null,
+        "defaultReworkLimit": 1,
+        "defaultProcessLimit": 1,
+        "postScript": null,
+        "pre1Script": null,
+        "pre2Script": null,
+        "defaultProcessLagTime": null
+      }],
+      "operationReleaseInfo": {
+        "changedFlowFlag": true,
+        "operations": {
+          "operationNumber": "100",
+          "changedOperationFlag": true
+        }
+      },
+      "userDataSets": null
+    }
+  }
+}

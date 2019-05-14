@@ -1,34 +1,33 @@
 {
   "user": {
-    "userId": "aron",
-    "functionId": "RELEASE",
-    "clientNode": "demoData"
+    "userId": "TAMHO",
+    "functionId": "TxDeployObject",
+    "password": null,
+    "newPassword": null,
+    "clientNode": null
   },
+  "messageId": "e9760e39-1b96-4a56-b632-5a9ec7be6f51",
+  "sendTime": "2019-05-10 06.48.20.262",
   "functionId": "RELEASE",
   "messageBody": {
     "action": "update",
     "releaseType": "recipe",
     "body": {
-      "recipeId": "RCP-01.01",
-      "recipeNameSpace": "ARON",
+      "description": null,
+      "userDataSets": [],
+      "recipeId": "ASH.1ASH-2.01",
+      "physicalRecipeId":"1ASH-2",
+      "recipeNameSpace": "ASH",
       "version": "01",
-      "description": "thsi is test",
-      "forceDownloadFlag": true,
-      "recipeBodyConfirmFlag": true,
-      "conditionalDownloadFlag": true,
-      "fpcCategory": "this is test fpc data",
-      "whiteDefinitionFlag": true,
-      "fileLocation": "demoData",
-      "equipments": null,
-      "userGroups": null,
-      "genericRecipe": "demoData",
-      "userDataSets": [{
-        "type": "demoData",
-        "value": "demoData",
-        "name": "demoData"
-      }]
+      "forceDownloadFlag": false,
+      "recipeBodyConfirmFlag": false,
+      "conditionalDownloadFlag": false,
+      "whiteDefinitionFlag": false,
+      "fileLocation": null,
+      "genericRecipe": null,
+      "fpcCategory": null,
+      "equipments": ["1-ASH-01", "1-ASH-02"],
+      "userGroups": []
     }
-  },
-  "messageId": "78d86cac-e314-473e-aed2-69fe487e2a0a",
-  "sendTime": "2019-04-29 13:51:00"
+  }
 }

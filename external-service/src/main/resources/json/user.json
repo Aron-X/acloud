@@ -16,7 +16,7 @@
       "password": "aron",
       "expiredPeriod": 1,
       "supervisorFlag": true,
-      "eMailAddress": "demoData",
+      "eMailAddress": "aron.xu@fa-software.com",
       "phoneNumber": "demoData",
       "privilegeGroups": ["demoData"],
       "pptAreaGroups": ["demoData"],
