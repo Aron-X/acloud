@@ -1,0 +1,24 @@
+{
+  "user": {
+    "userId": "ADMIN",
+    "functionId": "TxDeployObject",
+    "password": null,
+    "newPassword": null,
+    "clientNode": null
+  },
+  "messageId": "a772062a-033f-47ac-b977-c3445f548bc5",
+  "sendTime": "2019-05-14 08.56.17.936",
+  "functionId": "RELEASE",
+  "messageBody": {
+    "action": "create",
+    "releaseType": "workArea",
+    "body": {
+      "description": null,
+      "userDataSets": [],
+      "workAreaId": "TBay2",
+      "location": null,
+      "equipments": [],
+      "stockers": null
+    }
+  }
+}

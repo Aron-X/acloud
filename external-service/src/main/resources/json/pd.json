@@ -9,7 +9,7 @@
     "action": "create",
     "releaseType": "processDefinition",
     "body": {
-      "processDefinitionId": "ARONPD.01",
+      "processDefinitionId": "ARONPD2.01",
       "version": "01",
       "description": "this is test",
       "processDefinitionName": null,
@@ -17,9 +17,9 @@
       "department": "Dev",
       "fpcCategory": null,
       "whiteDefinitionFlag": false,
-      "defaultLogicalRecipeId": "CMP_ARON.01",
+      "defaultLogicalRecipeId": "CLEN_DSP_R.01",
       "defaultLogicalRecipeVersion": "01",
-      "defaultLogicalRecipe": "CMP_ARON.01",
+      "defaultLogicalRecipe": "CLEN_DSP_R.01",
       "logicalRecipesByTechnology": null,
       "logicalRecipesByProductGroup": null,
       "logicalRecipes": null,
@@ -27,7 +27,7 @@
       "specificEquipmentsByProductGroup": null,
       "specificEquipments": null,
       "equipments": [
-        "ARON0101"
+        "SRT0105"
       ],
       "standardProcessTime": null,
       "standardWaitTime": null,

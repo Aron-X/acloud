@@ -73,6 +73,9 @@ public class ExternalTest {
     @Value("classpath:json/module_pd.json")
     private Resource modulePd;
 
+    @Value("classpath:json/work_area.json")
+    private Resource workArea;
+
     @Test
     public void test() {
         log.info(">>> start <<<");
