@@ -1,0 +1,105 @@
+{
+  "user": {
+    "userId": "aron",
+    "functionId": "TxDeployObject",
+    "password": null,
+    "newPassword": null,
+    "clientNode": null
+  },
+  "messageId": "e9760e39-1b96-4a56-b632-5a9ec7be6f51",
+  "sendTime": "2019-05-10 06.48.20.262",
+  "functionId": "RELEASE",
+  "messageBody": {
+    "action": "create",
+    "releaseType": "mainProcessDefinition",
+    "body": {
+      "mainProcessDefinitionId": "MN_ARON_E.01",
+      "version": "01",
+      "description": "this is main pd test3",
+      "mainProcessDefinitionType": "Process",
+      "processFlowType": "Main",
+      "monitorRouteFlag": false,
+      "mfgLayer": "A",
+      "startBank": "B0515",
+      "endBank": "BKP-ENDI",
+      "mainProcessDefinitionOwner": "ADMIN",
+      "moduleProcessDefinitions": [
+        {
+          "moduleNumber": "1000",
+          "moduleProcessDefinitionId": "MD_ARONPD.01",
+          "version": "01",
+          "moduleProcessDefinition": "MD_ARONPD.01",
+          "sameTimeReleaseInChangeNoticeFlag": false,
+          "moduleProcessDefinitionInChangeNotice": null,
+          "stage": "SOI_START"
+        }
+      ],
+      "mainProcessOperations": [
+        {
+          "moduleNumber": "1000",
+          "moduleProcessDefinition": "MD_ARONPD.01",
+          "sameTimeReleaseInChangeNoticeFlag": false,
+          "moduleProcessDefinitionInChangeNotice": null,
+          "stage": null,
+          "operationNumber": "100",
+          "processDefinition": "ARONPD2.01",
+          "photoLayer": null,
+          "carrierCategory": null,
+          "processOperationNumber": null,
+          "responsibleOperationNumbers": null,
+          "mandatoryOperationRequiredFlag": false,
+          "autoBankInRequiredFlag": false,
+          "endOfMonitorRelationFlag": false,
+          "monitorGroupReleaseFlag": null,
+          "flowBatchControl": null,
+          "pilotWaferProcessControl": null,
+          "measDCSpecsByTechnology": null,
+          "measDCSpecsByProductGroup": null,
+          "measDCSpecs": null,
+          "defaultMeasDCSpec": null,
+          "defaultTestSpec": null,
+          "testSpecsByTechnology": null,
+          "testSpecsByProductGroup": null,
+          "testSpecs": null,
+          "deltaDCDefinitions": null,
+          "defaultDeltaDCSpecs": null,
+          "deltaDCSpecsByTechnology": null,
+          "deltaDCSpecsByProductGroup": null,
+          "deltaDCSpecs": null,
+          "subProcessDefinitions": null,
+          "reworkProcessDefinitions": null,
+          "reworkLimitsByTechnology": null,
+          "reworkLimitsByProductGroup": null,
+          "reworkLimits": null,
+          "defaultReworkLimit": 1,
+          "defaultProcessLimit": 1,
+          "processLimitsByTechnology": null,
+          "processLimitsByProductGroup": null,
+          "processLimits": null,
+          "postScript": null,
+          "pre1Script": null,
+          "pre2Script": null,
+          "defaultTimeRestrictions": null,
+          "timeRestrictionsByTechnology": null,
+          "timeRestrictionsByProductGroup": null,
+          "timeRestrictions": null,
+          "processLagTimesByTechnology": null,
+          "processLagTimesByProductGroup": null,
+          "processLagTimes": null,
+          "defaultProcessLagTime": 1
+        }
+      ],
+      "operationReleaseInfo": {
+        "changedFlowFlag": true,
+        "operations": [
+          {
+            "operationNumber": "1000.100",
+            "changedOperationFlag": false
+          }
+        ]
+      },
+      "dynamicRouteFlag": false,
+      "userDataSets": null
+    }
+  }
+}

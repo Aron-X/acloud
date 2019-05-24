@@ -13,14 +13,14 @@
     "action": "update",
     "releaseType": "moduleProcessDefinition",
     "body": {
-      "moduleProcessDefinitionId": "MD_ARONPD.01",
+      "moduleProcessDefinitionId": "MD_ARONPD2.01",
       "version": "01",
-      "description": "this is module pd test1",
+      "description": "this is module pd test2",
       "moduleProcessOperations": [{
         "operationNumber": "100",
-        "processDefinitionId": "ARONPD2.01",
+        "processDefinitionId": "ARONPD.01",
         "version": "01",
-        "processDefinition": "ARONPD2.01",
+        "processDefinition": "ARONPD.01",
         "processOperationNumber": "100",
         "mandatoryOperationRequiredFlag": false,
         "defaultMeasDCSpec": null,
@@ -36,7 +36,7 @@
         "changedFlowFlag": true,
         "operations": [{
           "operationNumber": "100",
-          "changedOperationFlag": true
+          "changedOperationFlag": false
         }]
       },
       "userDataSets": null
